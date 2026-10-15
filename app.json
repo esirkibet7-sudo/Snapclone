@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "SnapTube Clone",
+    "slug": "snaptube-clone",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "snaptubeclone",
+    "userInterfaceStyle": "automatic",
+    "android": {
+      "package": "com.example.snaptubeclone",
+      "permissions": [
+        "INTERNET",
+        "FOREGROUND_SERVICE",
+        "POST_NOTIFICATIONS",
+        "FOREGROUND_SERVICE_DATA_SYNC",
+        "FOREGROUND_SERVICE_MEDIA_PLAYBACK"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-3940256099942544~3347511713"
+        }
+      ],
+      "./plugins/withNativeMedia"
+    ],
+    "assetBundlePatterns": [
+      "assets/**/*"
+    ]
+  }
+}

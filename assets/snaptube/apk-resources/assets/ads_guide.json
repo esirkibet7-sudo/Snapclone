@@ -1,0 +1,618 @@
+{
+  "data": [
+    {
+      "note": "LP 实验 广告位到广告导流资源集合的map",
+      "name": "ads_pos_to_ads_guide_map",
+      "value": {
+        "youtube_details_top_banner": "banner_guide",
+        "search_video_result": "horizontal_banner_guide",
+        "youtube_details_banner": "horizontal_guide",
+        "interstitial_launch": "vertical_guide",
+        "play_list": "square_banner_guide",
+        "browser_banner": "banner_guide",
+        "start_download_interstitial": "vertical_guide",
+        "download_outside_reward": "vertical_guide",
+        "batch_download_reward": "vertical_guide",
+        "audio_preview": "horizontal_guide",
+        "youtube_feedstream": "horizontal_guide",
+        "start_download_interstitial_gp": "vertical_apk_guide",
+        "download_outside_reward_gp": "vertical_apk_guide",
+        "batch_download_reward_gp": "vertical_apk_guide",
+        "local_play_audio_gp": "vertical_apk_guide",
+        "local_play_video_gp": "vertical_apk_guide",
+        "adpos_video_detail_full_screen": "vertical_apk_guide",
+        "adpos_video_detail_speed_play": "vertical_apk_guide",
+        "adpos_video_detail_listen_play": "vertical_apk_guide",
+        "adpos_video_detail_continue_play": "vertical_apk_guide",
+        "adpos_music_detail_lyrics": "vertical_apk_guide",
+        "adpos_music_detail_continue_play": "vertical_apk_guide",
+        "music_bar_next": "vertical_apk_guide",
+        "battery_saver_interstitial": "vertical_guide",
+        "clean_interstitial": "vertical_guide",
+        "phone_boost_interstitial": "vertical_guide"
+      }
+    },
+    {
+      "note": "LP 实验 广告导流资源集合",
+      "name": "ads_guide_collection",
+      "value": {
+        "vertical_guide": [
+          "native_vertical_gp"
+        ],
+        "vertical_apk_guide": [
+          "native_vertical_apk"
+        ],
+        "horizontal_guide": [
+          "native_horizontal_gp"
+        ],
+        "banner_guide": [
+          "banner_gp"
+        ],
+        "square_guide": [
+          "native_square_gp"
+        ],
+        "horizontal_banner_guide": [
+          "banner_gp",
+          "native_horizontal_gp"
+        ],
+        "square_banner_guide": [
+          "native_square_gp",
+          "banner_gp"
+        ]
+      }
+    },
+    {
+      "name": "native_vertical_apk",
+      "replace": true,
+      "note": "native 竖屏导流资源",
+      "value": {
+        "app_identity": "larkplayer",
+        "app_name": "Lark Player",
+        "log_exposure": true,
+        "min_sdk": 19,
+        "type": "apk",
+        "app_version_code": 25530404,
+        "download_url": "https://dl.larkplayerapp.com/apk/LarkPlayer-v5.53.4-230609_1646_0a94f21-st-v7a.apk",
+        "installer": "com.android.vending",
+        "package_name": "com.dywx.larkplayer",
+        "log_click": true,
+        "auto_launch": true,
+        "broadcast_referrer_when_installed": true,
+        "gp_referrer": "utm_source%3Dsnaptube%26utm_campaign%3Dguide_demo%26utm_medium%3Djump_gp%26utm_term%3D%257Bversion%257D%26utm_content%3D%257Brandom_id%257D%257Binstall_days%257Dst_version_%257Bversion%257D",
+        "enabled": true,
+        "support_media_type": "audio|video",
+        "silence_task": false,
+        "icon_url": "https://intranet.thejeu.com/cl3wz4gt3000i01n2bn0oe50e",
+        "app_icon_url": "https://intranet.thejeu.com/cl3wz4gt3000i01n2bn0oe50e",
+        "title": "{@titles}",
+        "@titles": {
+          "es": "Reproductor de Música MP3",
+          "ar": "مشغل الموسيقى&برنامج اغاني,MP3",
+          "pt": "Reprodutor de Música & MP3",
+          "en": "Music Player"
+        },
+        "description": "{@description}",
+        "@description": {
+          "es": "Reproductor de música sin internet, app de música gratis soporta escuchar música",
+          "ar": " الموسيقى,برنامج اغانى,برنامج اغاني,تطبيق اغاني,ل play موسيقى بدون نت",
+          "pt": "Reprodutor de música offline, aplicativo de música gratis, para ouvir música",
+          "en": "Offline music player, play offline mp3"
+        },
+        "cta": "{@ctas}",
+        "@ctas": {
+          "es": "Instalar",
+          "ar": "تثبيت",
+          "pt": "Instalar",
+          "en": "Install"
+        },
+        "image_url_list": [
+          "vertical_image_0",
+          "vertical_image_1",
+          "vertical_image_2",
+          "vertical_image_3"
+        ]
+      }
+    },
+    {
+      "name": "native_vertical_apk",
+      "replace": true,
+      "when": "args.vc == 7052501 && !!args.server_hash.match(/^.{8}[0-7].*$/)",
+      "note": "native 竖屏导流资源",
+      "value": {
+        "app_identity": "larkplayer",
+        "app_name": "Lark Player",
+        "log_exposure": true,
+        "min_sdk": 19,
+        "type": "apk",
+        "app_version_code": 25596604,
+        "download_url": "https://dl.larkplayerapp.com/apk/LarkPlayer-v5.59.66-230726_1653_e10294b-st-v7a.apk",
+        "installer": "com.android.vending",
+        "package_name": "com.dywx.larkplayer",
+        "log_click": true,
+        "auto_launch": true,
+        "broadcast_referrer_when_installed": true,
+        "gp_referrer": "utm_source%3Dsnaptube%26utm_campaign%3Dguide_demo%26utm_medium%3Djump_gp%26utm_term%3D%257Bversion%257D%26utm_content%3D%257Brandom_id%257D%257Binstall_days%257Dst_version_%257Bversion%257D",
+        "enabled": true,
+        "support_media_type": "audio|video",
+        "silence_task": false,
+        "icon_url": "https://intranet.thejeu.com/cl3wz4gt3000i01n2bn0oe50e",
+        "app_icon_url": "https://intranet.thejeu.com/cl3wz4gt3000i01n2bn0oe50e",
+        "title": "{@titles}",
+        "@titles": {
+          "es": "Reproductor de Música MP3",
+          "ar": "مشغل الموسيقى&برنامج اغاني,MP3",
+          "pt": "Reprodutor de Música & MP3",
+          "en": "Music Player"
+        },
+        "description": "{@description}",
+        "@description": {
+          "es": "Reproductor de música sin internet, app de música gratis soporta escuchar música",
+          "ar": " الموسيقى,برنامج اغانى,برنامج اغاني,تطبيق اغاني,ل play موسيقى بدون نت",
+          "pt": "Reprodutor de música offline, aplicativo de música gratis, para ouvir música",
+          "en": "Offline music player, play offline mp3"
+        },
+        "cta": "{@ctas}",
+        "@ctas": {
+          "es": "Instalar",
+          "ar": "تثبيت",
+          "pt": "Instalar",
+          "en": "Install"
+        },
+        "image_url_list": [
+          "vertical_image_0",
+          "vertical_image_1",
+          "vertical_image_2",
+          "vertical_image_3"
+        ]
+      }
+    },
+    {
+      "name": "native_vertical_apk",
+      "replace": true,
+      "when": "args.vc == 7052501 && !!args.server_hash.match(/^.{8}[8-9a-f].*$/)",
+      "note": "native 竖屏导流资源",
+      "value": {
+        "app_identity": "larkplayer",
+        "app_name": "Lark Player",
+        "log_exposure": true,
+        "min_sdk": 19,
+        "type": "apk",
+        "app_version_code": 25596804,
+        "download_url": "https://dl.larkplayerapp.com/apk/LarkPlayer-v5.59.68-230726_1654_e10294b-st-v7a.apk",
+        "installer": "com.android.vending",
+        "package_name": "com.dywx.larkplayer",
+        "log_click": true,
+        "auto_launch": true,
+        "broadcast_referrer_when_installed": true,
+        "gp_referrer": "utm_source%3Dsnaptube%26utm_campaign%3Dguide_demo%26utm_medium%3Djump_gp%26utm_term%3D%257Bversion%257D%26utm_content%3D%257Brandom_id%257D%257Binstall_days%257Dst_version_%257Bversion%257D",
+        "enabled": true,
+        "support_media_type": "audio|video",
+        "silence_task": false,
+        "icon_url": "https://intranet.thejeu.com/cl3wz4gt3000i01n2bn0oe50e",
+        "app_icon_url": "https://intranet.thejeu.com/cl3wz4gt3000i01n2bn0oe50e",
+        "title": "{@titles}",
+        "@titles": {
+          "es": "Reproductor de Música MP3",
+          "ar": "مشغل الموسيقى&برنامج اغاني,MP3",
+          "pt": "Reprodutor de Música & MP3",
+          "en": "Music Player"
+        },
+        "description": "{@description}",
+        "@description": {
+          "es": "Reproductor de música sin internet, app de música gratis soporta escuchar música",
+          "ar": " الموسيقى,برنامج اغانى,برنامج اغاني,تطبيق اغاني,ل play موسيقى بدون نت",
+          "pt": "Reprodutor de música offline, aplicativo de música gratis, para ouvir música",
+          "en": "Offline music player, play offline mp3"
+        },
+        "cta": "{@ctas}",
+        "@ctas": {
+          "es": "Instalar",
+          "ar": "تثبيت",
+          "pt": "Instalar",
+          "en": "Install"
+        },
+        "image_url_list": [
+          "vertical_image_0",
+          "vertical_image_1",
+          "vertical_image_2",
+          "vertical_image_3"
+        ]
+      }
+    },
+    {
+      "name": "native_vertical_apk",
+      "replace": true,
+      "when": "args.vc == 7052601 && !!args.server_hash.match(/^.{8}[0-7].*$/)",
+      "note": "native 竖屏导流资源",
+      "value": {
+        "app_identity": "larkplayer",
+        "app_name": "Lark Player",
+        "log_exposure": true,
+        "min_sdk": 19,
+        "type": "apk",
+        "app_version_code": 25596704,
+        "download_url": "https://dl.larkplayerapp.com/apk/LarkPlayer-v5.59.67-230726_1653_e10294b-st-v7a.apk",
+        "installer": "com.android.vending",
+        "package_name": "com.dywx.larkplayer",
+        "log_click": true,
+        "auto_launch": true,
+        "broadcast_referrer_when_installed": true,
+        "gp_referrer": "utm_source%3Dsnaptube%26utm_campaign%3Dguide_demo%26utm_medium%3Djump_gp%26utm_term%3D%257Bversion%257D%26utm_content%3D%257Brandom_id%257D%257Binstall_days%257Dst_version_%257Bversion%257D",
+        "enabled": true,
+        "support_media_type": "audio|video",
+        "silence_task": false,
+        "icon_url": "https://intranet.thejeu.com/cl3wz4gt3000i01n2bn0oe50e",
+        "app_icon_url": "https://intranet.thejeu.com/cl3wz4gt3000i01n2bn0oe50e",
+        "title": "{@titles}",
+        "@titles": {
+          "es": "Reproductor de Música MP3",
+          "ar": "مشغل الموسيقى&برنامج اغاني,MP3",
+          "pt": "Reprodutor de Música & MP3",
+          "en": "Music Player"
+        },
+        "description": "{@description}",
+        "@description": {
+          "es": "Reproductor de música sin internet, app de música gratis soporta escuchar música",
+          "ar": " الموسيقى,برنامج اغانى,برنامج اغاني,تطبيق اغاني,ل play موسيقى بدون نت",
+          "pt": "Reprodutor de música offline, aplicativo de música gratis, para ouvir música",
+          "en": "Offline music player, play offline mp3"
+        },
+        "cta": "{@ctas}",
+        "@ctas": {
+          "es": "Instalar",
+          "ar": "تثبيت",
+          "pt": "Instalar",
+          "en": "Install"
+        },
+        "image_url_list": [
+          "vertical_image_0",
+          "vertical_image_1",
+          "vertical_image_2",
+          "vertical_image_3"
+        ]
+      }
+    },
+    {
+      "name": "native_vertical_apk",
+      "replace": true,
+      "when": "args.vc == 7052601 && !!args.server_hash.match(/^.{8}[8-9a-f].*$/)",
+      "note": "native 竖屏导流资源",
+      "value": {
+        "app_identity": "larkplayer",
+        "app_name": "Lark Player",
+        "log_exposure": true,
+        "min_sdk": 19,
+        "type": "apk",
+        "app_version_code": 25596504,
+        "download_url": "https://dl.larkplayerapp.com/apk/LarkPlayer-v5.59.65-230726_1651_e10294b-st-v7a.apk",
+        "installer": "com.android.vending",
+        "package_name": "com.dywx.larkplayer",
+        "log_click": true,
+        "auto_launch": true,
+        "broadcast_referrer_when_installed": true,
+        "gp_referrer": "utm_source%3Dsnaptube%26utm_campaign%3Dguide_demo%26utm_medium%3Djump_gp%26utm_term%3D%257Bversion%257D%26utm_content%3D%257Brandom_id%257D%257Binstall_days%257Dst_version_%257Bversion%257D",
+        "enabled": true,
+        "support_media_type": "audio|video",
+        "silence_task": false,
+        "icon_url": "https://intranet.thejeu.com/cl3wz4gt3000i01n2bn0oe50e",
+        "app_icon_url": "https://intranet.thejeu.com/cl3wz4gt3000i01n2bn0oe50e",
+        "title": "{@titles}",
+        "@titles": {
+          "es": "Reproductor de Música MP3",
+          "ar": "مشغل الموسيقى&برنامج اغاني,MP3",
+          "pt": "Reprodutor de Música & MP3",
+          "en": "Music Player"
+        },
+        "description": "{@description}",
+        "@description": {
+          "es": "Reproductor de música sin internet, app de música gratis soporta escuchar música",
+          "ar": " الموسيقى,برنامج اغانى,برنامج اغاني,تطبيق اغاني,ل play موسيقى بدون نت",
+          "pt": "Reprodutor de música offline, aplicativo de música gratis, para ouvir música",
+          "en": "Offline music player, play offline mp3"
+        },
+        "cta": "{@ctas}",
+        "@ctas": {
+          "es": "Instalar",
+          "ar": "تثبيت",
+          "pt": "Instalar",
+          "en": "Install"
+        },
+        "image_url_list": [
+          "vertical_image_0",
+          "vertical_image_1",
+          "vertical_image_2",
+          "vertical_image_3"
+        ]
+      }
+    },
+    {
+      "name": "native_vertical_gp",
+      "replace": true,
+      "note": "native 竖屏导流资源",
+      "value": {
+        "app_identity": "larkplayer",
+        "app_name": "Lark Player",
+        "log_exposure": true,
+        "min_sdk": 19,
+        "type": "gp",
+        "installer": "com.android.vending",
+        "package_name": "com.dywx.larkplayer",
+        "backup_type": "apk",
+        "download_url": "https://dl.larkplayerapp.com/apk/LarkPlayer-v5.59.66-230726_1653_e10294b-st-v7a.apk",
+        "log_click": true,
+        "auto_launch": true,
+        "broadcast_referrer_when_installed": true,
+        "gp_referrer": "utm_source%3Dsnaptube%26utm_campaign%3Dguide_demo%26utm_medium%3Djump_gp%26utm_term%3D%257Bversion%257D%26utm_content%3D%257Brandom_id%257D%257Binstall_days%257Dst_version_%257Bversion%257D",
+        "enabled": true,
+        "support_media_type": "audio|video",
+        "silence_task": false,
+        "icon_url": "https://intranet.thejeu.com/cl3wz4gt3000i01n2bn0oe50e",
+        "app_icon_url": "https://intranet.thejeu.com/cl3wz4gt3000i01n2bn0oe50e",
+        "title": "{@titles}",
+        "@titles": {
+          "es": "Reproductor de Música MP3",
+          "ar": "مشغل الموسيقى&برنامج اغاني,MP3",
+          "pt": "Reprodutor de Música & MP3",
+          "en": "Music Player"
+        },
+        "description": "{@description}",
+        "@description": {
+          "es": "Reproductor de música sin internet, app de música gratis soporta escuchar música",
+          "ar": " الموسيقى,برنامج اغانى,برنامج اغاني,تطبيق اغاني,ل play موسيقى بدون نت",
+          "pt": "Reprodutor de música offline, aplicativo de música gratis, para ouvir música",
+          "en": "Offline music player, play offline mp3"
+        },
+        "cta": "{@ctas}",
+        "@ctas": {
+          "es": "Instalar",
+          "ar": "تثبيت",
+          "pt": "Instalar",
+          "en": "Install"
+        },
+        "image_url_list": [
+          "vertical_image_0",
+          "vertical_image_1",
+          "vertical_image_2",
+          "vertical_image_3"
+        ]
+      }
+    },
+    {
+      "name": "native_horizontal_gp",
+      "replace": true,
+      "note": "native 横屏导流资源",
+      "value": {
+        "app_identity": "larkplayer",
+        "app_name": "Lark Player",
+        "log_exposure": true,
+        "min_sdk": 19,
+        "type": "gp",
+        "backup_type": "apk",
+        "download_url": "https://dl.larkplayerapp.com/apk/LarkPlayer-v5.59.66-230726_1653_e10294b-st-v7a.apk",
+        "installer": "com.android.vending",
+        "package_name": "com.dywx.larkplayer",
+        "log_click": true,
+        "auto_launch": true,
+        "broadcast_referrer_when_installed": true,
+        "gp_referrer": "utm_source%3Dsnaptube%26utm_campaign%3Dguide_demo%26utm_medium%3Djump_gp%26utm_term%3D%257Bversion%257D%26utm_content%3D%257Brandom_id%257D%257Binstall_days%257Dst_version_%257Bversion%257D",
+        "enabled": true,
+        "support_media_type": "audio|video",
+        "silence_task": false,
+        "icon_url": "https://intranet.thejeu.com/cl3wz4gt3000i01n2bn0oe50e",
+        "app_icon_url": "https://intranet.thejeu.com/cl3wz4gt3000i01n2bn0oe50e",
+        "title": "{@titles}",
+        "@titles": {
+          "es": "Reproductor de Música MP3",
+          "ar": "مشغل الموسيقى&برنامج اغاني,MP3",
+          "pt": "Reprodutor de Música & MP3",
+          "en": "Music Player"
+        },
+        "description": "{@description}",
+        "@description": {
+          "es": "Reproductor de música sin internet, app de música gratis soporta escuchar música",
+          "ar": " الموسيقى,برنامج اغانى,برنامج اغاني,تطبيق اغاني,ل play موسيقى بدون نت",
+          "pt": "Reprodutor de música offline, aplicativo de música gratis, para ouvir música",
+          "en": "Offline music player, play offline mp3"
+        },
+        "cta": "{@ctas}",
+        "@ctas": {
+          "es": "Instalar",
+          "ar": "تثبيت",
+          "pt": "Instalar",
+          "en": "Install"
+        },
+        "image_url_list": [
+          "horizontal_image_0",
+          "horizontal_image_1",
+          "horizontal_image_2",
+          "horizontal_image_3"
+        ]
+      }
+    },
+    {
+      "name": "banner_gp",
+      "replace": true,
+      "note": "banner 导流资源",
+      "value": {
+        "app_identity": "larkplayer",
+        "app_name": "Lark Player",
+        "log_exposure": true,
+        "min_sdk": 19,
+        "type": "gp",
+        "backup_type": "apk",
+        "download_url": "https://dl.larkplayerapp.com/apk/LarkPlayer-v5.59.66-230726_1653_e10294b-st-v7a.apk",
+        "installer": "com.android.vending",
+        "package_name": "com.dywx.larkplayer",
+        "log_click": true,
+        "auto_launch": true,
+        "broadcast_referrer_when_installed": true,
+        "gp_referrer": "utm_source%3Dsnaptube%26utm_campaign%3Dguide_demo%26utm_medium%3Djump_gp%26utm_term%3D%257Bversion%257D%26utm_content%3D%257Brandom_id%257D%257Binstall_days%257Dst_version_%257Bversion%257D",
+        "enabled": true,
+        "support_media_type": "audio|video",
+        "silence_task": false,
+        "icon_url": "https://intranet.thejeu.com/cl3wz4gt3000i01n2bn0oe50e",
+        "app_icon_url": "https://intranet.thejeu.com/cl3wz4gt3000i01n2bn0oe50e",
+        "image_url_list": [
+          "banner_image_0",
+          "banner_image_1",
+          "banner_image_2",
+          "banner_image_3"
+        ]
+      }
+    },
+    {
+      "name": "native_square_gp",
+      "replace": true,
+      "note": "native 方形导流资源",
+      "value": {
+        "app_identity": "larkplayer",
+        "app_name": "Lark Player",
+        "log_exposure": true,
+        "min_sdk": 19,
+        "type": "gp",
+        "backup_type": "apk",
+        "download_url": "https://dl.larkplayerapp.com/apk/LarkPlayer-v5.59.66-230726_1653_e10294b-st-v7a.apk",
+        "installer": "com.android.vending",
+        "package_name": "com.dywx.larkplayer",
+        "log_click": true,
+        "auto_launch": true,
+        "broadcast_referrer_when_installed": true,
+        "gp_referrer": "utm_source%3Dsnaptube%26utm_campaign%3Dguide_demo%26utm_medium%3Djump_gp%26utm_term%3D%257Bversion%257D%26utm_content%3D%257Brandom_id%257D%257Binstall_days%257Dst_version_%257Bversion%257D",
+        "enabled": true,
+        "support_media_type": "audio|video",
+        "silence_task": false,
+        "icon_url": "https://intranet.thejeu.com/cl3wz4gt3000i01n2bn0oe50e",
+        "app_icon_url": "https://intranet.thejeu.com/cl3wz4gt3000i01n2bn0oe50e",
+        "title": "{@titles}",
+        "@titles": {
+          "es": "Reproductor de Música MP3",
+          "ar": "مشغل الموسيقى&برنامج اغاني,MP3",
+          "pt": "Reprodutor de Música & MP3",
+          "en": "Music Player"
+        },
+        "description": "{@description}",
+        "@description": {
+          "es": "Reproductor de música sin internet, app de música gratis soporta escuchar música",
+          "ar": " الموسيقى,برنامج اغانى,برنامج اغاني,تطبيق اغاني,ل play موسيقى بدون نت",
+          "pt": "Reprodutor de música offline, aplicativo de música gratis, para ouvir música",
+          "en": "Offline music player, play offline mp3"
+        },
+        "cta": "{@ctas}",
+        "@ctas": {
+          "es": "Instalar",
+          "ar": "تثبيت",
+          "pt": "Instalar",
+          "en": "Install"
+        },
+        "image_url_list": [
+          "square_image_0",
+          "square_image_1",
+          "square_image_2",
+          "square_image_3"
+        ]
+      }
+    },
+    {
+      "note": "image, video 资源名称和地址映射的 map",
+      "name": "ads_guide_resource_map",
+      "value": {
+        "banner_image_0": {
+          "pt": "https://img-app.thejeu.com/image/em-video/3d31e0c682dc55b010a74c26c79bfb74.jpeg",
+          "es": "http://img-app.thejeu.com/image/em-video/668f80630ba15cd32e4c7251fc1d171d.jpeg",
+          "en": "https://img-app.thejeu.com/image/em-video/4c6cd3b03f70bd5313ef4362df17875a.jpeg",
+          "ar": "https://img-app.thejeu.com/image/em-video/58a12a5568ffd12e69c250e79b2be586.jpeg"
+        },
+        "banner_image_1": {
+          "pt": "http://img-app.thejeu.com/image/em-video/2a244a45474416dce0347d00d8d34588.jpeg",
+          "es": "http://img-app.thejeu.com/image/em-video/63314dd0e260c0ecc4ec2cca1a7b586e.jpeg",
+          "en": "http://img-app.thejeu.com/image/em-video/8f362e2f2474ee49550bdaaddca1b2f6.jpeg",
+          "ar": "https://img-app.thejeu.com/image/em-video/5f7393805bfc6297380fd187ad2fa7eb.jpeg"
+        },
+        "banner_image_2": {
+          "pt": "http://img-app.thejeu.com/image/em-video/ba8aee03823806fcf0a56aa294f44334.jpeg",
+          "es": "http://img-app.thejeu.com/image/em-video/9fe65cef783bc7b80984cf28e8978589.jpeg",
+          "en": "http://img-app.thejeu.com/image/em-video/df3f529f67c18fa54b8e77bd502a8e3c.jpeg",
+          "ar": "http://img-app.thejeu.com/image/em-video/967993721de14f3959bd518d1667eca1.jpeg"
+        },
+        "banner_image_3": {
+          "pt": "http://img-app.thejeu.com/image/em-video/c6ed9f4a50e4ae76abeec1a8724a2a4d.jpeg",
+          "es": "http://img-app.thejeu.com/image/em-video/7ded89db4e8f76a4e97b3a04863ced7d.jpeg",
+          "en": "http://img-app.thejeu.com/image/em-video/9f97e2aa0d1594a4ad08851a48b57aa0.jpeg",
+          "ar": "http://img-app.thejeu.com/image/em-video/ebca1cd9f046e94c0306e91b9dacf342.jpeg"
+        },
+        "vertical_image_0": {
+          "pt": "http://img-app.thejeu.com/image/em-video/d8c16b4e48ecea1d316f895f59a0af2b.jpeg",
+          "es": "http://img-app.thejeu.com/image/em-video/83f5db316e23f0c6581a7cfedf15981c.jpeg",
+          "en": "http://img-app.thejeu.com/image/em-video/e3c2dbf09e39762f78f1b21112f5579d.jpeg",
+          "ar": "http://img-app.thejeu.com/image/em-video/660ff06652e518205189c251f05b42f4.jpeg"
+        },
+        "vertical_image_1": {
+          "pt": "http://img-app.thejeu.com/image/em-video/307963576762e1a6382bc44213a86667.jpeg",
+          "es": "http://img-app.thejeu.com/image/em-video/02e16ab97d0a237aa9c91416e60c0ecd.jpeg",
+          "en": "http://img-app.thejeu.com/image/em-video/adcfc6b7d268b901167035cdcd83d477.jpeg",
+          "ar": "http://img-app.thejeu.com/image/em-video/79e6b1e4a54493401dddf69c0030cf54.jpeg"
+        },
+        "vertical_image_2": {
+          "pt": "http://img-app.thejeu.com/image/em-video/27d9dbd4e2b051f564fef5f037543673.jpeg",
+          "es": "http://img-app.thejeu.com/image/em-video/25344ee1d13c6a7369324c871126c060.jpeg",
+          "en": "http://img-app.thejeu.com/image/em-video/de45aba707e579bcc560c0327a63ad64.jpeg",
+          "ar": "http://img-app.thejeu.com/image/em-video/1660b9fa2cd0c6dbf5b2228f377b714d.jpeg"
+        },
+        "vertical_image_3": {
+          "pt": "http://img-app.thejeu.com/image/em-video/2851e472d7336c2a5051b64f596cc802.jpeg",
+          "es": "http://img-app.thejeu.com/image/em-video/6824c2fb9b8a341ec4b9c363d0b5242a.jpeg",
+          "en": "http://img-app.thejeu.com/image/em-video/89db44c6145c80d6bbc496bb049df034.jpeg",
+          "ar": "http://img-app.thejeu.com/image/em-video/e434d09a05aaceafdd93aed0c204b8e1.jpeg"
+        },
+        "horizontal_image_0": {
+          "pt": "http://img-app.thejeu.com/image/em-video/cd6eac0500e4c488edcd581195787a4f.jpeg",
+          "es": "http://img-app.thejeu.com/image/em-video/fbc53483bf92431a922bdd13759bd02b.jpeg",
+          "en": "http://img-app.thejeu.com/image/em-video/0fd84a16a54932176c2ac3134c793e81.jpeg",
+          "ar": "http://img-app.thejeu.com/image/em-video/caa83fd4e019416e693cda9556b98acf.jpeg"
+        },
+        "horizontal_image_1": {
+          "pt": "http://img-app.thejeu.com/image/em-video/74e5fa5ae93191366d6abc4517e9289b.jpeg",
+          "es": "http://img-app.thejeu.com/image/em-video/74e5fa5ae93191366d6abc4517e9289b.jpeg",
+          "en": "http://img-app.thejeu.com/image/em-video/a3609445f72616746a6add0c30a31cb6.jpeg",
+          "ar": "http://img-app.thejeu.com/image/em-video/1bde8dbc0a7e114b4660603fddb7b170.jpeg"
+        },
+        "horizontal_image_2": {
+          "pt": "http://img-app.thejeu.com/image/em-video/11bec034d54e64fe57e7a324ad1ea1aa.jpeg",
+          "es": "http://img-app.thejeu.com/image/em-video/4901c9e2e7ff8b2998bb083f347b5db7.jpeg",
+          "en": "http://img-app.thejeu.com/image/em-video/25e6eab8054dccf7ed3f6f2f34463e47.jpeg",
+          "ar": "http://img-app.thejeu.com/image/em-video/55af5c075bd706031c67bf7b473b4127.jpeg"
+        },
+        "horizontal_image_3": {
+          "pt": "http://img-app.thejeu.com/image/em-video/5fc0b4db689655c95fe731017f96aefe.jpeg",
+          "es": "http://img-app.thejeu.com/image/em-video/65ba3f89138099aee9be1c56894b5900.jpeg",
+          "en": "http://img-app.thejeu.com/image/em-video/f5a1891c4f7ea0ad4248325e4e95ebab.jpeg",
+          "ar": "http://img-app.thejeu.com/image/em-video/c73d70d65c276620ea602c074ec2726a.jpeg"
+        },
+        "square_image_0": {
+          "pt": "http://img-app.thejeu.com/image/em-video/3c713fb917f31955cfa5a7871d80cc0a.jpeg",
+          "es": "http://img-app.thejeu.com/image/em-video/2310cf1d157773ea9994a27d999a4d72.jpeg",
+          "en": "http://img-app.thejeu.com/image/em-video/b4ef242dae81f5468d1a39a9ed219343.jpeg",
+          "ar": "http://img-app.thejeu.com/image/em-video/733068e6d4a3c816bca0494d5daff87e.jpeg"
+        },
+        "square_image_1": {
+          "pt": "http://img-app.thejeu.com/image/em-video/8c3a5868eb1fb043a1caad1a454ee47c.jpeg",
+          "es": "http://img-app.thejeu.com/image/em-video/07b09bbabe49289b30f25faa111cb8ce.jpeg",
+          "en": "http://img-app.thejeu.com/image/em-video/7f994559c7491b1871a6e89cbdf79cd0.jpeg",
+          "ar": "http://img-app.thejeu.com/image/em-video/c98d4073f34c537cb6990fbc9dd09a00.jpeg"
+        },
+        "square_image_2": {
+          "pt": "http://img-app.thejeu.com/image/em-video/85adf0c3b76fd65ff016cac9b1f8393f.jpeg",
+          "es": "http://img-app.thejeu.com/image/em-video/e9c22548ef82547b60598e7711e11e65.jpeg",
+          "en": "http://img-app.thejeu.com/image/em-video/afcaabd74af8d7ea610b082a79d0b339.jpeg",
+          "ar": "http://img-app.thejeu.com/image/em-video/7dc43e271beffd3efc2fdaddb2ef81b5.jpeg"
+        },
+        "square_image_3": {
+          "pt": "http://img-app.thejeu.com/image/em-video/ba9552a3be989125d03f759ad34d108c.jpeg",
+          "es": "http://img-app.thejeu.com/image/em-video/03da6b1dd1aefd9f0fcf40b9eb457208.jpeg",
+          "en": "http://img-app.thejeu.com/image/em-video/8be4d526141231db2423213581e6648f.jpeg",
+          "ar": "http://img-app.thejeu.com/image/em-video/7320a48a5e1f8a63521b57890ffa02ed.jpeg"
+        }
+      }
+    }
+  ]
+}

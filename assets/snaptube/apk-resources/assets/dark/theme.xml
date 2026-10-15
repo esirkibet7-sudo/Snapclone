@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 深色省电皮肤颜色标记，若应用适配深色省电皮肤，则该资源一定要添加！！！-->
+    <color name="hiad_dark_mode_tag_color">#FF3F97E9</color>
+
+    <color name="hiad_color_text_secondary">#80FFFFFF</color>
+    <color name="hiad_color_text_primary">#A9ffffff</color>
+    <color name="hiad_functional_blue">#0D9FFB</color>
+    <color name="hiad_color_list_divider">#33FFFFFF</color>
+    <color name="hiad_color_subheader_divider">#0Cffffff</color>
+    <!--普通按钮-->
+    <color name="hiad_emui_button">#1AFFFFFF</color>
+    <color name="hiad_emui_button_pressed">#2E2E2E</color>
+    <color name="hiad_emui_color_bg">#000000</color>
+    <color name="hiad_emui_color_clickeffic">#13FFFFFF</color>
+
+    <!--EndCard-->
+    <color name="hiad_endcard_default_bg">#262626</color>
+    <color name="hiad_endcard_text_color">#FFFFFF</color>
+    <color name="hiad_endcard_desc_color">#99FFFFFF</color>
+
+    <color name="hiad_emui_color_subbg">#000000</color>
+
+    <!-- 激活提醒弹框优化 -->
+    <color name="hiad_install_success_optimize_card_color">#202224</color>
+    <color name="hiad_install_success_optimize_button_close">#FFFFFF</color>
+    <color name="hiad_install_success_optimize_title_color">#FFFFFF</color>
+    <color name="hiad_install_success_optimize_button_color">#FFFFFF</color>
+    <color name="hiad_install_success_optimize_button_bg_color">#317AF7</color>
+
+    <color name="hiad_emui_appbar_title">#DBFFFFFF</color>
+
+    <!--普通按钮-->
+    <color name="hiad_color_bg">#FF000000</color>
+
+    <color name="hiad_app_text_color">#A9FFFFFF</color>
+    <color name="hiad_app_text_color_half">#A9FFFFFF</color>
+    <color name="hiad_emui_8_btn_color">#A9FFFFFF</color>
+    <color name="hiad_emui_black">#FFFFFF</color>
+    <color name="hiad_emui_white">#000000</color>
+    <color name="hiad_30_percent_white">#4c000000</color>
+    <color name="hiad_80_percent_white">#cc000000</color>
+    <color name="hiad_90_percent_white">#e5000000</color>
+    <color name="hiad_0_percent_black">#00ffffff</color>
+    <color name="hiad_20_percent_black">#33ffffff</color>
+    <color name="hiad_30_percent_black">#4cffffff</color>
+    <color name="hiad_40_percent_black">#66ffffff</color>
+    <color name="hiad_60_percent_black">#99ffffff</color>
+    <color name="hiad_50_percent_black">#80ffffff</color>
+    <color name="hiad_62_percent_black">#9Effffff</color>
+    <color name="hiad_70_percent_black">#b2ffffff</color>
+    <color name="hiad_90_percent_black">#e5ffffff</color>
+
+    <color name="hiad_video_progress_blue">#0d9ffb</color>
+    <color name="hiad_video_progress_blue_hm">#317AF7</color>
+    <color name="hiad_video_progress_buffer">#330d9ffb</color>
+    <color name="hiad_video_progress_bg">#26000000</color>
+    <color name="hiad_video_buffer_progress_start">#000d9ffb</color>
+    <color name="hiad_seekbar_thumb_edge_color">#08ffffff</color>
+
+    <color name="haid_masking_bg">#80000000</color>
+
+    <!-- 下载按钮正常状态 -->
+    <color name="hiad_down_normal_bg">#0Dffffff</color>
+    <color name="hiad_down_normal_bg_press">#1Affffff</color>
+    <color name="hiad_down_normal_stroke">#0Dffffff</color>
+    <color name="hiad_down_normal_text">#005BBA</color>
+
+    <!--落地页下载按钮正常状态-->
+    <color name="hiad_landing_app_down_normal_bg">#007dff</color>
+    <color name="hiad_landing_app_down_normal_bg_pressed">#005BBA</color>
+    <color name="hiad_landing_app_down_normal_bg_hm">#317AF7</color>
+    <color name="hiad_landing_app_down_normal_bg_pressed_hm">#005BBA</color>
+
+    <color name="haid_landing_app_down_pre_scan_bg">#1Affffff</color>
+
+    <!-- 下载按钮下载状态 -->
+    <color name="hiad_app_down_processing_progress">#33007dff</color>
+    <color name="hiad_app_down_processing_backgroud">#00ffffff</color>
+
+    <color name="hiad_app_down_processing_text">#ffffff</color>
+
+    <!-- 下载按钮安装中状态 -->
+    <color name="hiad_app_down_installing_bg">#0Dffffff</color>
+    <color name="hiad_app_down_installing_stroke">#0Dffffff</color>
+    <color name="hiad_app_down_installing_text">#005BBA</color>
+
+    <color name="hiad_dialog_gray_10">#ccffffff</color>
+    <color name="hiad_mute_buttto_bg">#66000000</color>
+
+    <color name="hiad_emui_accent">#FF317AF7</color>
+    <color name="emui_accent">#317AF7</color>
+
+    <color name="hiad_opendevice_arrow">#ffffff</color>
+
+    <!--弹窗-->
+    <color name="hiad_popup_default_bg">#202224</color>
+    <color name="hiad_popup_text_color">#FFFFFF</color>
+    <color name="hiad_popup_version_color">#99FFFFFF</color>
+    <color name="hiad_button">#00000000</color>
+    <color name="hiad_button_pressed">#1AFFFFFF</color>
+    <color name="hiad_download_button">#317AF7</color>
+    <color name="hiad_download_button_pressed">#4F8DF8</color>
+    <color name="hiad_cancel_text_color">#5291FF</color>
+    <color name="hiad_landing_details_btn_bg">#2C2C2C</color>
+    <color name="hiad_install_success_card_color">#363636</color>
+    <color name="hiad_install_success_title_color">#ffffffff</color>
+    <color name="hiad_install_success_desc_color">#99e7e7e5</color>
+
+    <!--switch button-->
+    <color name="hiad_switch_open">#FF016CDE</color>
+    <color name="hiad_switch_close">#4D4D4D</color>
+    <color name="hiad_switch_close_hm">#ffffff</color>
+    <color name="hiad_switch_open_lock">#61016CDE</color>
+
+    <!-- 应用安装授权弹框-->
+    <color name="hiad_app_allow_install_dialog_bg">#FF202224</color>
+    <color name="hiad_app_allow_install_text_color">#FFFFFFFF</color>
+</resources>

@@ -1,0 +1,354 @@
+[
+  {
+    "language_code": "af",
+    "language_name": "Afrikaans"
+  },
+  {
+    "language_code": "az",
+    "language_name": "Azərbaycan"
+  },
+  {
+    "language_code": "id",
+    "language_name": "Bahasa Indonesia"
+  },
+  {
+    "language_code": "ms",
+    "language_name": "Bahasa Malaysia"
+  },
+  {
+    "language_code": "bs",
+    "language_name": "Bosanski"
+  },
+  {
+    "language_code": "ca",
+    "language_name": "Català"
+  },
+  {
+    "language_code": "cs",
+    "language_name": "Čeština"
+  },
+  {
+    "language_code": "da",
+    "language_name": "Dansk"
+  },
+  {
+    "language_code": "de",
+    "language_name": "Deutsch"
+  },
+  {
+    "language_code": "et",
+    "language_name": "Eesti"
+  },
+  {
+    "language_code": "en-IN",
+    "language_name": "English (India)"
+  },
+  {
+    "language_code": "en-GB",
+    "language_name": "English (UK)"
+  },
+  {
+    "language_code": "en",
+    "language_name": "English (US)"
+  },
+  {
+    "language_code": "es",
+    "language_name": "Español (España)"
+  },
+  {
+    "language_code": "es-419",
+    "language_name": "Español (Latinoamérica)"
+  },
+  {
+    "language_code": "es-US",
+    "language_name": "Español (US)"
+  },
+  {
+    "language_code": "eu",
+    "language_name": "Euskara"
+  },
+  {
+    "language_code": "fil",
+    "language_name": "Filipino"
+  },
+  {
+    "language_code": "fr",
+    "language_name": "Français"
+  },
+  {
+    "language_code": "fr-CA",
+    "language_name": "Français (Canada)"
+  },
+  {
+    "language_code": "gl",
+    "language_name": "Galego"
+  },
+  {
+    "language_code": "hr",
+    "language_name": "Hrvatski"
+  },
+  {
+    "language_code": "zu",
+    "language_name": "IsiZulu"
+  },
+  {
+    "language_code": "is",
+    "language_name": "Íslenska"
+  },
+  {
+    "language_code": "it",
+    "language_name": "Italiano"
+  },
+  {
+    "language_code": "sw",
+    "language_name": "Kiswahili"
+  },
+  {
+    "language_code": "lv",
+    "language_name": "Latviešu valoda"
+  },
+  {
+    "language_code": "lt",
+    "language_name": "Lietuvių"
+  },
+  {
+    "language_code": "hu",
+    "language_name": "Magyar"
+  },
+  {
+    "language_code": "nl",
+    "language_name": "Nederlands"
+  },
+  {
+    "language_code": "no",
+    "language_name": "Norsk"
+  },
+  {
+    "language_code": "uz",
+    "language_name": "O‘zbek"
+  },
+  {
+    "language_code": "pl",
+    "language_name": "Polski"
+  },
+  {
+    "language_code": "pt-PT",
+    "language_name": "Português"
+  },
+  {
+    "language_code": "pt",
+    "language_name": "Português (Brasil)"
+  },
+  {
+    "language_code": "ro",
+    "language_name": "Română"
+  },
+  {
+    "language_code": "sq",
+    "language_name": "Shqip"
+  },
+  {
+    "language_code": "sk",
+    "language_name": "Slovenčina"
+  },
+  {
+    "language_code": "sl",
+    "language_name": "Slovenščina"
+  },
+  {
+    "language_code": "sr-Latn",
+    "language_name": "Srpski"
+  },
+  {
+    "language_code": "fi",
+    "language_name": "Suomi"
+  },
+  {
+    "language_code": "sv",
+    "language_name": "Svenska"
+  },
+  {
+    "language_code": "vi",
+    "language_name": "Tiếng Việt"
+  },
+  {
+    "language_code": "tr",
+    "language_name": "Türkçe"
+  },
+  {
+    "language_code": "tk",
+    "language_name": "Türkmen"
+  },
+  {
+    "language_code": "be",
+    "language_name": "Беларуская"
+  },
+  {
+    "language_code": "bg",
+    "language_name": "Български"
+  },
+  {
+    "language_code": "ky",
+    "language_name": "Кыргызча"
+  },
+  {
+    "language_code": "kk",
+    "language_name": "Қазақ Тілі"
+  },
+  {
+    "language_code": "tg",
+    "language_name": "Тоҷикӣ"
+  },
+  {
+    "language_code": "mk",
+    "language_name": "Македонски"
+  },
+  {
+    "language_code": "mn",
+    "language_name": "Монгол"
+  },
+  {
+    "language_code": "ru",
+    "language_name": "Русский"
+  },
+  {
+    "language_code": "sr",
+    "language_name": "Српски"
+  },
+  {
+    "language_code": "uk",
+    "language_name": "Українська"
+  },
+  {
+    "language_code": "el",
+    "language_name": "Ελληνικά"
+  },
+  {
+    "language_code": "hy",
+    "language_name": "Հայերեն"
+  },
+  {
+    "language_code": "iw",
+    "language_name": "עברית"
+  },
+  {
+    "language_code": "ur",
+    "language_name": "اردو"
+  },
+  {
+    "language_code": "ku",
+    "language_name": "كوردی"
+  },
+  {
+    "language_code": "ar",
+    "language_name": "العربية"
+  },
+  {
+    "language_code": "fa",
+    "language_name": "فارسی"
+  },
+  {
+    "language_code": "ne",
+    "language_name": "नेपाली"
+  },
+  {
+    "language_code": "mr",
+    "language_name": "मराठी"
+  },
+  {
+    "language_code": "hi",
+    "language_name": "हिन्दी"
+  },
+  {
+    "language_code": "as",
+    "language_name": "অসমীয়া"
+  },
+  {
+    "language_code": "bn",
+    "language_name": "বাংলা"
+  },
+  {
+    "language_code": "pa",
+    "language_name": "ਪੰਜਾਬੀ"
+  },
+  {
+    "language_code": "pa-IN",
+    "language_name": "Punjabi (India)"
+  },
+  {
+    "language_code": "pa-PK",
+    "language_name": "Punjabi (Pakistan)"
+  },
+  {
+    "language_code": "gu",
+    "language_name": "ગુજરાતી"
+  },
+  {
+    "language_code": "or",
+    "language_name": "ଓଡ଼ିଆ"
+  },
+  {
+    "language_code": "ta",
+    "language_name": "தமிழ்"
+  },
+  {
+    "language_code": "te",
+    "language_name": "తెలుగు"
+  },
+  {
+    "language_code": "kn",
+    "language_name": "ಕನ್ನಡ"
+  },
+  {
+    "language_code": "ml",
+    "language_name": "മലയാളം"
+  },
+  {
+    "language_code": "si",
+    "language_name": "සිංහල"
+  },
+  {
+    "language_code": "th",
+    "language_name": "ภาษาไทย"
+  },
+  {
+    "language_code": "lo",
+    "language_name": "ລາວ"
+  },
+  {
+    "language_code": "my",
+    "language_name": "ဗမာ"
+  },
+  {
+    "language_code": "ka",
+    "language_name": "ქართული"
+  },
+  {
+    "language_code": "am",
+    "language_name": "አማርኛ"
+  },
+  {
+    "language_code": "km",
+    "language_name": "ខ្មែរ"
+  },
+  {
+    "language_code": "zh-CN",
+    "language_name": "中文 (简体)"
+  },
+  {
+    "language_code": "zh-TW",
+    "language_name": "中文 (繁體)"
+  },
+  {
+    "language_code": "zh-HK",
+    "language_name": "中文 (香港)"
+  },
+  {
+    "language_code": "ja",
+    "language_name": "日本語"
+  },
+  {
+    "language_code": "ko",
+    "language_name": "한국어"
+  }
+]

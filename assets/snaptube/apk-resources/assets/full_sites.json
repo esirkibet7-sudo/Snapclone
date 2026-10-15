@@ -1,0 +1,290 @@
+[
+  {
+    "title": "YouTube",
+    "url": "https://m.youtube.com",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/39e785bfee3a9cb0ecbd5bb58645a736_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/76039d05ac3d5c43d1b42e1d014940ce_48_48.png"
+  },
+  {
+    "title": "Vimeo",
+    "url": "https://vimeo.com/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/3bb04cc932a20691065b19523d8a10f2_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/3f67669ef8e75716a46a0ba42deec530_48_48.png"
+  },
+  {
+    "title": "FunnyMP4",
+    "url": "http://bit.ly/22uQgg6",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/0ca5c555415da3a6939af53fa27ed6df_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/077b1434173634f0767ed93f1b5fdfb0_48_48.png"
+  },
+  {
+    "title": "Instagram",
+    "url": "https://www.instagram.com/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/013385040d063da9a9ae3e0a746ce91a_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/a4e006faa6f8102373299d97ed3d498e_48_48.png"
+  },
+  {
+    "title": "Wapking",
+    "url": "http://wapking.com",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/0c4332bd64a7db396a0ddc83cb0edd15_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/b31ea61729b3f9e539f673e3d816d73f_48_48.png"
+  },
+  {
+    "title": "Metacafe",
+    "url": "http://www.metacafe.com/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/b791b2d9c3deffed0cf0cf5884b78a4b_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/44ccb4ce6aac26a37bf36ab745f4a360_48_48.png"
+  },
+  {
+    "title": "Pagal Worlds",
+    "url": "http://bit.ly/2gGiWn6",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/5785c855779f9c9d5590c0c2ad5cc17f_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/c009822c7d479d51cde1202dcaaf47b2_48_48.png"
+  },
+  {
+    "title": "Freshmaza",
+    "url": "http://freshmaza.info",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/f294242daaffb96ff86333bfb9320ea2_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/7fc8aff94fbc56bc252e5fdc237f34ef_48_48.png"
+  },
+  {
+    "title": "Yum Video",
+    "url": "http://yumvideo.com",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/e8145088f0c9aac986628219e6ea1c44_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/e8145088f0c9aac986628219e6ea1c44_48_48.png"
+  },
+  {
+    "title": "Vuclip",
+    "url": "http://m.vuclip.com",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/3bc8afdf20ca8ff1f44283344cb780bc_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/80acb9f7095740d892f45e31acc29605_48_48.png"
+  },
+  {
+    "title": "DailyTube",
+    "url": "http://dailytube.in",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/0f7495f84395e16e842fd97cc31e9a68_48_48.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/273697e73e757606593331d8ed9871ad_48_48.png"
+  },
+  {
+    "title": "LiveLeak",
+    "url": "http://liveleak.com",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/a4bd35f0f39b9b9c85d3fc020ef563fd_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/e7628adc21a51a7efde7b5d3855cbbdc_48_48.png"
+  },
+  {
+    "title": "Funny or Die",
+    "url": "http://funnyordie.com",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/6fd024e818797539284ca7309c04177c_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/348e2d13772679edff6fc707633c2e5f_48_48.png"
+  },
+  {
+    "title": "Youku",
+    "url": "http://www.youku.com",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/7d28e779996ebd65e02563c3688942f8_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/79e838fd816730299150216a2c0f6e95_48_48.png"
+  },
+  {
+    "title": "VEVO",
+    "url": "http://www.vevo.com",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/31e6600e0aa5dc8ae6706c5c073198c3_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/c1681162bb6d998422aa306138c5a671_48_48.png"
+  },
+  {
+    "title": "Metatube",
+    "url": "http://www.metatube.com",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/9815557f17ca63f0137a56dc04125bcd_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/fbeb76c529a6c414450d086e661385e0_48_48.png"
+  },
+  {
+    "title": "Vine",
+    "url": "http://vine.com",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/43be077fe9ba7b7713e18c9561e03649_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/02e311253ab2fbeaeece500c91e4e63c_48_48.png"
+  },
+  {
+    "title": "Dailymotion",
+    "url": "http://www.dailymotion.com/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/10ac896608e31b3c13c5e0294ce3e5f0_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/73ab59bd867b03a477305024534acb49_48_48.png"
+  },
+  {
+    "title": "iQiyi",
+    "url": "http://www.iqiyi.com/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/ef787034b513c42e69620300e1c2781e_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/05a9914bcfe4834a38af02b591292398_48_48.png"
+  },
+  {
+    "title": "Tudou",
+    "url": "http://www.tudou.com/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/46c50c1569290335baabb1483c0127b1_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/461bdf1814d68ac543a53ab2a4869317_48_48.png"
+  },
+  {
+    "title": "Sapo",
+    "url": "http://videos.sapo.pt/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/7c6c280026762956bc9043c18067b695_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/55285d85d8fc9fb971dea496ec76721e_48_48.png"
+  },
+  {
+    "title": "Hotsouth",
+    "url": "http://hotsouth.net/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/4acc84069620aacaf9c11f6897a99958_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/3038e427a1de8d30586ce52204803535_48_48.png"
+  },
+  {
+    "title": "Mirchifun",
+    "url": "http://mirchifun.com/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/5134c089173c45f5d82b7f0dd2ca24b2_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/658724d2f07f1ddb36b07910af03fa2b_48_48.png"
+  },
+  {
+    "title": "ICC Cricket",
+    "url": "http://www.icc-cricket.com/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/addd3aff9326d3dc1b51e61c9d1e3c7f_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/ab842ffee72af288df90efc3ba08a011_48_48.png"
+  },
+  {
+    "title": "Vid.me",
+    "url": "http://vid.me",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/11e78b998a6ec4a1a989852202a4b3ef_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/1ae28cc9f1bdbef31a7deb587952f8da_48_48.png"
+  },
+  {
+    "title": "facebook",
+    "url": "https://m.facebook.com/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/e2faed4e58164012e3bff291c498b612_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/e2faed4e58164012e3bff291c498b612_48_48.png"
+  },
+  {
+    "title": "ANIME FLV",
+    "url": "http://animeflv.net/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/fb51b2d87eeef87170186f0e3024d7cc_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/b7f1f6ee9599e0961f3ef372d686f69a_48_48.png"
+  },
+  {
+    "title": "Twitter",
+    "url": "http://mobile.twitter.com",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/acef97d114fe069fd022e64ef37829f4_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/9ac2eb80e40797507d15336b9e2b9cf5_48_48.png"
+  },
+  {
+    "title": "Odnoklassniki",
+    "url": "http://ok.ru/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/bd40d0e9d9f44ac93613dec237ca3393_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/5cd9ff24e1e12438d49da0114e229ba4_48_48.png"
+  },
+  {
+    "title": "Mp4Mania",
+    "url": "http://mp4mania.com/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/f468913b65c8d630232b6cef7132018b_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/97c5b4c9dc80e1dcf05bf72004fe81b9_48_48.png"
+  },
+  {
+    "title": "Anghami",
+    "url": "https://play.anghami.com/explore",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/18f754756b444427f48fa84144f72055_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/d0f2b5d422cf5bc9b6c525da81b3b365_48_48.png"
+  },
+  {
+    "title": "Elanimeonline",
+    "url": "http://m.elanimeonline.com/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/cdc04afe50905efcd4379527860afdbc_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/36f3b00a5d00a38713e24c6f1ef7a722_48_48.png"
+  },
+  {
+    "title": "Animalog",
+    "url": "http://animalog.com.br/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/f079dfd7931e391bb8c7bef8f2740fa2_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/f5695230184a833ad986476936b29475_48_48.png"
+  },
+  {
+    "title": "AnimeQ",
+    "url": "http://www.animeq.com.br/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/459a54b331434b19d62a916a0c9397f1_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/eaba30d81f49e7665d7ce90afe6fcfeb_48_48.png"
+  },
+  {
+    "title": "Mthai",
+    "url": "http://video.mthai.com/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/be72e5a2be7a9ec065be84711796a8ba_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/f8a2325a7815f1a55bb3fdda879f6b0f_48_48.png"
+  },
+  {
+    "title": "Fresh Videoz",
+    "url": "https://goo.gl/Tc7cBM",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/3feda7c2084d654d46501fc61dd7ae74_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/3feda7c2084d654d46501fc61dd7ae74_48_48.png"
+  },
+  {
+    "title": "AnimeYT",
+    "url": "http://www.animeyt.tv/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/84f6db6264fc2102da50cd510a86e350_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/52b18614f102e9bd93ccf231b1adc56c_48_48.png"
+  },
+  {
+    "title": "Bola",
+    "url": "http://www.bola.com/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/19aa994df062cca9031e7032d3fd74f2_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/c2fe37f149cdf4d3e0e846441b75eb93_48_48.png"
+  },
+  {
+    "title": "OK",
+    "url": "https://ok.ru/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/bd40d0e9d9f44ac93613dec237ca3393_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/5cd9ff24e1e12438d49da0114e229ba4_48_48.png"
+  },
+  {
+    "title": "atozmp3",
+    "url": "http://www.atozmp3.co/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/88a77a74c858fb6d2dbd4c3f0ea58055_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/ab279e423d157e0eab7e0df40913e1b0_48_48.png"
+  },
+  {
+    "title": "Djpunjab",
+    "url": "http://djpunjab.com",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/44a4414d5bdee8d62296eb3a50d5c86e_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/9b1d1c890bd18baf93f9746ed98729d2_48_48.png"
+  },
+  {
+    "title": "tubetamil",
+    "url": "http://www.tubetamil.com/",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/a038410fc8796589b45c28f1073e079e_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/edbbebffbb41effb1efc14f5caf7acdd_48_48.png"
+  },
+  {
+    "title": "filmywap",
+    "url": "http://www.filmywap.com",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/d7df800cac82922fc47977b2032788e5_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/97bb2dcced97d49253640c64607d8e59_48_48.png"
+  },
+  {
+    "title": "videoming",
+    "url": "http://videoming.com",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/3ccee89dd40eb890a597be3e82d9d14c_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/e1604919b40ab06965c03b3855f24ca9_48_48.png"
+  },
+  {
+    "title": "Kupee",
+    "url": "https://kupee.page.link/NLtk",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/5f59fc194708fc6240554bf91d104094_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/5f59fc194708fc6240554bf91d104094_48_48.png"
+  },
+  {
+    "title": "Kill Virus",
+    "url": "https://virusraid.page.link/zXbp",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/ccad4aa24d372d76a57b0c956051a95f_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/ccad4aa24d372d76a57b0c956051a95f_48_48.png"
+  },
+  {
+    "title": "Descuento",
+    "url": "https://csasail.com/collections/beauty",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/08e5bb4fcea3d472ffa8970d4e5db9b1_128_128.jpeg",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/08e5bb4fcea3d472ffa8970d4e5db9b1_48_48.jpeg"
+  },
+  {
+    "title": "Twitter",
+    "url": "http://mobile.twitter.com",
+    "largeIconUrl": "http://img-app.thejeu.com/image/website-icon/161e646698917f47b7b85f248439b189_128_128.png",
+    "smallIconUrl": "http://img-app.thejeu.com/image/website-icon/813f110ac6c533c678551c91b21e8905_48_48.png"
+  }
+]
