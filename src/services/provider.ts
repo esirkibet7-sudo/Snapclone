@@ -78,9 +78,22 @@ export class SnapTubeProvider implements ContentProvider {
   }
 
   async home(tab: SearchFilter = 'all'): Promise<Video[]> {
-    const route = tab === 'all' ? routes.home : tab === 'music' ? routes.music : tab === 'live' ? routes.trending : routes.trending;
-    const raw = await this.request(API_BASE, route, { page: 1, tab: tab === 'all' ? undefined : tab });
-    return normalizeVideos(raw).filter(v => tab === 'all' || v.category === tab);
+    return this.homePaged(tab, 1);
+  }
+
+  async homePaged(tab: SearchFilter = 'all', page: number = 1): Promise<Video[]> {
+    const pageKeywords: Record<string, string[]> = {
+      all: ['trending popular', 'viral videos 2025', 'top videos this week', 'most watched', 'hot right now'],
+      music: ['top music hits 2025', 'new music videos', 'popular songs now', 'music charts', 'hot new songs'],
+      shorts: ['trending shorts', 'viral short clips', 'funny shorts', 'best short videos', 'new shorts today'],
+      live: ['live stream now', 'live events today', 'live gaming', 'live news', 'live concerts'],
+    };
+    const keywords = pageKeywords[tab] ?? pageKeywords['all'];
+    const keyword = keywords[(page - 1) % keywords.length];
+    const route = '/list/youtube/home';
+    const raw = await this.request(API_BASE, route, { page, tab: tab === 'all' ? undefined : tab, q: keyword }).catch(() => null);
+    const videos = normalizeVideos(raw ?? {}).filter(v => tab === 'all' || v.category === tab);
+    return videos;
   }
 
   async getDetails(id: string): Promise<Video | null> {

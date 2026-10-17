@@ -1,5 +1,5 @@
 {
-  "name": "snaptube-clone",
+  "name": "kenyatube",
   "version": "0.1.0",
   "private": true,
   "main": "expo-router/entry",
@@ -21,6 +21,7 @@
     "expo-clipboard": "~8.0.8",
     "expo-file-system": "^19.0.0",
     "expo-linking": "^8.0.0",
+    "expo-media-session": "^0.0.0",
     "expo-router": "~6.0.0",
     "expo-sharing": "~14.0.0",
     "expo-status-bar": "~3.0.0",
@@ -37,8 +38,6 @@
   },
   "devDependencies": {
     "@types/react": "~19.1.10",
-    "eslint": "^9.0.0",
-    "eslint-config-expo": "~10.0.0",
     "typescript": "~5.9.2"
   }
 }

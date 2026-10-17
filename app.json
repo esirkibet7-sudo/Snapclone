@@ -1,20 +1,34 @@
 {
   "expo": {
-    "name": "SnapTube Clone",
-    "slug": "snaptube-clone",
+    "name": "KenyaTube",
+    "slug": "kenyatube",
     "version": "0.1.0",
     "orientation": "portrait",
-    "scheme": "snaptubeclone",
+    "scheme": "kenyatube",
     "userInterfaceStyle": "automatic",
+    "icon": "./assets/icon.png",
+    "ios": {
+      "infoPlist": {
+        "UIBackgroundModes": ["audio"]
+      }
+    },
     "android": {
-      "package": "com.example.snaptubeclone",
+      "package": "com.example.kenyatube",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#18181c"
+      },
       "permissions": [
         "INTERNET",
         "FOREGROUND_SERVICE",
         "POST_NOTIFICATIONS",
         "FOREGROUND_SERVICE_DATA_SYNC",
-        "FOREGROUND_SERVICE_MEDIA_PLAYBACK"
+        "FOREGROUND_SERVICE_MEDIA_PLAYBACK",
+        "WAKE_LOCK"
       ]
+    },
+    "web": {
+      "favicon": "./assets/icon.png"
     },
     "plugins": [
       "expo-router",
@@ -28,6 +42,12 @@
     ],
     "assetBundlePatterns": [
       "assets/**/*"
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "cbda9fa8-91ac-4edc-aaea-dfc72148cee9"
+      }
+    }
   }
 }

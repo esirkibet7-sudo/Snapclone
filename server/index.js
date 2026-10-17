@@ -75,6 +75,8 @@ function getLiveVideoDetails(videoIdOrUrl) {
       '-J',
       '--no-playlist',
       '--no-warnings',
+      '--extractor-args',
+      'youtube:player_client=android,web',
       '--ffmpeg-location',
       FFMPEG_PATH,
       url,
@@ -194,32 +196,103 @@ app.get(['/v2/video/search', '/api/search'], async (req, res) => {
 
 // 3. Home & Category Feeds
 app.get(['/list/youtube/home', '/list/youtube/feed/trending', '/list/youtube/music'], async (req, res) => {
-  const path = req.path;
-  const tab = req.query.tab || (path.includes('music') ? 'music' : 'all');
+  const routePath = req.path;
+  const tab = req.query.tab || (routePath.includes('music') ? 'music' : 'all');
+  const clientKeyword = req.query.q || '';
+  const page = parseInt(req.query.page, 10) || 1;
 
   try {
-    let query = 'trending popular';
+    let queries = [];
     let cat = 'video';
     if (tab === 'music') {
-      query = 'top music hits 2026';
       cat = 'music';
+      queries = clientKeyword
+        ? [clientKeyword, `${clientKeyword} official audio`, `${clientKeyword} hits`]
+        : [
+            'top music hits 2025',
+            'afrobeats and gengetone 2025',
+            'latest kenyan music 2025',
+            'viral tiktok songs',
+          ];
     } else if (tab === 'shorts') {
-      query = 'trending youtube shorts';
       cat = 'shorts';
+      queries = clientKeyword
+        ? [clientKeyword, `${clientKeyword} shorts`]
+        : [
+            'trending youtube shorts',
+            'viral comedy shorts',
+            'kenyan comedy shorts funny',
+            'amazing viral clips shorts',
+          ];
     } else if (tab === 'live') {
-      query = 'live stream now';
       cat = 'live';
+      queries = clientKeyword
+        ? [clientKeyword, `${clientKeyword} live`]
+        : [
+            'live news kenya',
+            'citizen tv live',
+            'live stream now',
+            'live music radio 24/7',
+          ];
+    } else {
+      // 'all' / Kenya Tube main FYP
+      cat = 'video';
+      queries = clientKeyword
+        ? [clientKeyword, `trending ${clientKeyword}`, `${clientKeyword} popular`]
+        : [
+            'trending kenya 2025',
+            'viral videos 2025',
+            'top comedy kenya',
+            'latest news updates kenya',
+            'most watched videos this week',
+          ];
     }
 
-    const r = await yts(query);
-    const videos = (r.videos || []).slice(0, 25);
-    const mapped = videos.map(v => mapYtsVideo(v, cat));
-    res.json(mapped);
+    // Execute parallel searches for high volume & variety
+    const queryResults = await Promise.all(
+      queries.map(q => yts(q).then(r => r.videos || []).catch(() => []))
+    );
+
+    const merged = [].concat(...queryResults);
+    // Deduplicate by video ID
+    const uniqueMap = new Map();
+    merged.forEach(v => {
+      const vidId = v.videoId || v.url;
+      if (vidId && !uniqueMap.has(vidId)) {
+        uniqueMap.set(vidId, mapYtsVideo(v, cat));
+      }
+    });
+
+    const list = Array.from(uniqueMap.values());
+    res.json(list);
   } catch (err) {
     console.error('Home feed error:', err);
     res.json([]);
   }
 });
+
+// Helper: find best combined (video+audio) format at or below a target height
+function findCombinedFormat(formats, targetHeight) {
+  // Prefer exact match, then walk down through heights
+  const heights = [targetHeight, 720, 480, 360, 240, 144];
+  for (const h of heights) {
+    if (h > targetHeight) continue; // never return higher than requested
+    const match = formats.find(
+      f =>
+        f.vcodec && f.vcodec !== 'none' &&
+        f.acodec && f.acodec !== 'none' &&
+        f.url &&
+        (Number(f.height) === h ||
+          // YouTube format_id shortcuts: 22=720p, 18=360p, 36=240p, 17=144p
+          (h === 720 && f.format_id === '22') ||
+          (h === 360 && f.format_id === '18') ||
+          (h === 240 && f.format_id === '36') ||
+          (h === 144 && f.format_id === '17'))
+    );
+    if (match) return { url: match.url, height: Number(match.height || h), formatId: match.format_id };
+  }
+  return null;
+}
 
 // 4. Video Details & Format Resolution (/v2/video and /api/video)
 app.get(['/v2/video', '/api/video'], async (req, res) => {
@@ -237,11 +310,35 @@ app.get(['/v2/video', '/api/video'], async (req, res) => {
 
     // If a specific stream/format was requested
     if (requestedFormat) {
-      const streamUrl = `${baseUrl}/api/download?id=${encodeURIComponent(raw.id)}&format=${encodeURIComponent(requestedFormat)}`;
+      const isAudioFmt = requestedFormat.startsWith('audio_');
+      let streamUrl;
+
+      if (!isAudioFmt) {
+        const targetHeight = parseInt(requestedFormat.replace('video_', ''), 10) || 360;
+        const combined = findCombinedFormat(raw.formats || [], targetHeight);
+        if (combined) {
+          // Direct CDN URL — no server muxing needed, excellent quality
+          console.log(`[stream] Direct combined ${combined.height}p (fmt ${combined.formatId}) for ${raw.id}`);
+          return res.json({
+            id: raw.id,
+            title: raw.title,
+            streamUrl: combined.url,
+            directUrl: combined.url,
+            resolvedHeight: combined.height,
+            formats,
+          });
+        }
+        // No combined format found — fall back to server-muxed stream
+        streamUrl = `${baseUrl}/api/download?id=${encodeURIComponent(raw.id)}&format=${encodeURIComponent(requestedFormat)}`;
+      } else {
+        streamUrl = `${baseUrl}/api/download?id=${encodeURIComponent(raw.id)}&format=${encodeURIComponent(requestedFormat)}`;
+      }
+
       return res.json({
         id: raw.id,
         title: raw.title,
         streamUrl,
+        directUrl: null,
         formats,
       });
     }
@@ -261,13 +358,13 @@ app.get(['/v2/video', '/api/video'], async (req, res) => {
       formats,
     };
 
-    // Also support array return format if frontend expects normalizeVideos(raw)
     res.json([videoObj]);
   } catch (err) {
     console.error('Video details error:', err);
     res.status(404).json({ error: 'Video not found or unavailable', message: err.message });
   }
 });
+
 
 // 5. Direct Stream / Muxed Download Endpoint (/api/download and /v2/video/stream)
 app.get(['/api/download', '/v2/video/stream'], async (req, res) => {
@@ -284,65 +381,49 @@ app.get(['/api/download', '/v2/video/stream'], async (req, res) => {
     const safeTitle = (raw.title || 'video').replace(/[^a-zA-Z0-9_\-]/g, '_').slice(0, 60);
 
     const isAudio = format.startsWith('audio_');
-    const targetHeight = format.replace('video_', '');
+    const targetHeight = parseInt(format.replace('video_', ''), 10) || 360;
 
-    // Check if there is an existing combined format that doesn't need muxing (like 360p or 720p)
+    // ── For video requests: try to find a direct combined format first ──────
     if (!isAudio) {
-      const combined = (raw.formats || []).find(
-        f => f.vcodec && f.vcodec !== 'none' && f.acodec && f.acodec !== 'none' && String(f.height) === targetHeight && f.url
-      );
-      if (combined && combined.url) {
-        // Direct stream available, redirect or stream directly
+      const combined = findCombinedFormat(raw.formats || [], targetHeight);
+      if (combined) {
+        console.log(`[download] Redirecting to direct ${combined.height}p stream for ${id}`);
         return res.redirect(combined.url);
       }
     }
 
-    // If muxing or audio conversion is needed:
-    // Run yt-dlp streaming to stdout through ffmpeg
+    // ── Audio conversion / muxed video stream via yt-dlp + ffmpeg ──────────
     if (isAudio) {
       res.setHeader('Content-Disposition', `attachment; filename="${safeTitle}.mp3"`);
       res.setHeader('Content-Type', 'audio/mpeg');
 
       const ytdlProc = spawn('python', [
-        '-m',
-        'yt_dlp',
-        '-f',
-        'bestaudio',
-        '--extract-audio',
-        '--audio-format',
-        'mp3',
-        '--audio-quality',
-        format === 'audio_320' ? '320K' : format === 'audio_192' ? '192K' : '128K',
-        '--ffmpeg-location',
-        FFMPEG_PATH,
-        '-o',
-        '-',
+        '-m', 'yt_dlp',
+        '-f', 'bestaudio',
+        '--extract-audio', '--audio-format', 'mp3',
+        '--audio-quality', format === 'audio_320' ? '320K' : format === 'audio_192' ? '192K' : '128K',
+        '--ffmpeg-location', FFMPEG_PATH,
+        '-o', '-',
         videoUrl,
       ]);
 
       ytdlProc.stdout.pipe(res);
       ytdlProc.stderr.on('data', d => {
-        // Log stderr for diagnostics
         const str = d.toString();
         if (str.includes('ERROR')) console.error('[yt-dlp audio]:', str);
       });
       req.on('close', () => ytdlProc.kill());
     } else {
-      // Video + Audio muxed into MP4 container
+      // Muxed MP4 — last resort when no combined format exists
       res.setHeader('Content-Disposition', `attachment; filename="${safeTitle}_${targetHeight}p.mp4"`);
       res.setHeader('Content-Type', 'video/mp4');
 
       const ytdlProc = spawn('python', [
-        '-m',
-        'yt_dlp',
-        '-f',
-        `bestvideo[height<=${targetHeight}]+bestaudio/best[height<=${targetHeight}]/best`,
-        '--merge-output-format',
-        'mp4',
-        '--ffmpeg-location',
-        FFMPEG_PATH,
-        '-o',
-        '-',
+        '-m', 'yt_dlp',
+        '-f', `bestvideo[height<=${targetHeight}][ext=mp4]+bestaudio[ext=m4a]/bestvideo[height<=${targetHeight}]+bestaudio/best[height<=${targetHeight}]/best`,
+        '--merge-output-format', 'mp4',
+        '--ffmpeg-location', FFMPEG_PATH,
+        '-o', '-',
         videoUrl,
       ]);
 
