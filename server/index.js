@@ -11,7 +11,41 @@ app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
-const FFMPEG_PATH = path.resolve(__dirname, '../node_modules/ffmpeg-static/ffmpeg.exe');
+
+// Resolve FFMPEG path across Linux (Render/Docker) and Windows
+let ffmpegStaticPath = null;
+try {
+  ffmpegStaticPath = require('ffmpeg-static');
+} catch {}
+
+const FFMPEG_PATH = process.env.FFMPEG_PATH
+  || (ffmpegStaticPath && typeof ffmpegStaticPath === 'string' && fs.existsSync(ffmpegStaticPath) ? ffmpegStaticPath : null)
+  || (process.platform === 'win32'
+    ? path.resolve(__dirname, '../node_modules/ffmpeg-static/ffmpeg.exe')
+    : 'ffmpeg');
+
+// Resolve Python command (supports python3 on Linux/Render, python on Windows, or custom PYTHON_PATH)
+const PYTHON_CMD = process.env.PYTHON_PATH || (process.platform === 'win32' ? 'python' : 'python3');
+
+function runPython(args, options, callback) {
+  execFile(PYTHON_CMD, args, options, (err, stdout, stderr) => {
+    if (err && err.code === 'ENOENT') {
+      const fallback = PYTHON_CMD === 'python' ? 'python3' : 'python';
+      return execFile(fallback, args, options, callback);
+    }
+    callback(err, stdout, stderr);
+  });
+}
+
+function spawnPython(args) {
+  try {
+    return spawn(PYTHON_CMD, args);
+  } catch (err) {
+    const fallback = PYTHON_CMD === 'python' ? 'python3' : 'python';
+    return spawn(fallback, args);
+  }
+}
+
 const DOWNLOADS_CACHE_DIR = path.resolve(__dirname, '../temp_downloads');
 
 if (!fs.existsSync(DOWNLOADS_CACHE_DIR)) {
@@ -82,7 +116,7 @@ function getLiveVideoDetails(videoIdOrUrl) {
       url,
     ];
 
-    execFile('python', args, { maxBuffer: 10 * 1024 * 1024 }, (err, stdout, stderr) => {
+    runPython(args, { maxBuffer: 10 * 1024 * 1024 }, (err, stdout, stderr) => {
       if (err) {
         console.error('yt-dlp error:', stderr || err.message);
         return reject(new Error(stderr || err.message));
@@ -167,9 +201,15 @@ function extractAvailableFormats(rawInfo, baseUrl) {
   return result;
 }
 
-// 1. Health check
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', service: 'snapclone-backend', time: new Date().toISOString() });
+// 1. Health check & root status for Render
+app.get(['/', '/health'], (req, res) => {
+  res.json({
+    status: 'ok',
+    service: 'kenyatube-backend',
+    version: '1.0.0',
+    platform: process.platform,
+    time: new Date().toISOString(),
+  });
 });
 
 // 2. Search endpoint (/v2/video/search and /api/search)
@@ -397,7 +437,7 @@ app.get(['/api/download', '/v2/video/stream'], async (req, res) => {
       res.setHeader('Content-Disposition', `attachment; filename="${safeTitle}.mp3"`);
       res.setHeader('Content-Type', 'audio/mpeg');
 
-      const ytdlProc = spawn('python', [
+      const ytdlProc = spawnPython([
         '-m', 'yt_dlp',
         '-f', 'bestaudio',
         '--extract-audio', '--audio-format', 'mp3',
@@ -418,7 +458,7 @@ app.get(['/api/download', '/v2/video/stream'], async (req, res) => {
       res.setHeader('Content-Disposition', `attachment; filename="${safeTitle}_${targetHeight}p.mp4"`);
       res.setHeader('Content-Type', 'video/mp4');
 
-      const ytdlProc = spawn('python', [
+      const ytdlProc = spawnPython([
         '-m', 'yt_dlp',
         '-f', `bestvideo[height<=${targetHeight}][ext=mp4]+bestaudio[ext=m4a]/bestvideo[height<=${targetHeight}]+bestaudio/best[height<=${targetHeight}]/best`,
         '--merge-output-format', 'mp4',

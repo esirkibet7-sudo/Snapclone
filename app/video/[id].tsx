@@ -25,6 +25,7 @@ import { downloadManager } from '../../src/services/downloadManager';
 import { library } from '../../src/services/library';
 import { mediaSession } from '../../src/services/mediaSession';
 import { Video, VideoFormat, VideoFormatOption } from '../../src/types/video';
+import { personalization, inferTopicsFromVideo } from '../../src/services/personalization';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const SEEK_SECONDS = 10;
@@ -431,6 +432,10 @@ export default function VideoDetails() {
   const [durationMs, setDurationMs]     = useState(0);
   const positionRef                      = useRef(0);
   const isPlayingRef                     = useRef(false);
+  const savedRef                         = useRef(false);
+  const sharedRef                        = useRef(false);
+  const currentVideoRef                  = useRef(video);
+  useEffect(() => { currentVideoRef.current = video; }, [video]);
 
   // ── Controls visibility ───────────────────────────────────────────────────
   const [controlsVisible, setControlsVisible] = useState(false);
@@ -493,16 +498,16 @@ export default function VideoDetails() {
       playsInSilentModeIOS: true,
       interruptionModeIOS: 1,
       shouldDuckAndroid: false,
-      interruptionModeAndroid: 1,
+      interruptionModeAndroid: 2, // INTERRUPTION_MODE_ANDROID_DO_NOT_MIX
       playThroughEarpieceAndroid: false,
+      allowsRecordingIOS: false,
     }).catch(() => {});
 
-    // Register OS media notification button handlers (⏮ ⏸/▶ ⏭)
+    // Register OS media notification button handlers
     mediaSession.setActionHandlers({
       play:  () => videoRef.current?.playAsync().catch(() => {}),
       pause: () => videoRef.current?.pauseAsync().catch(() => {}),
       previoustrack: () => {
-        // Restart if near start, else go to related[1]
         if (positionRef.current > 5000) {
           videoRef.current?.setStatusAsync({ positionMillis: 0, shouldPlay: true }).catch(() => {});
         }
@@ -527,9 +532,10 @@ export default function VideoDetails() {
   }, []);
 
 
-  // ── Fetch video details + stream (cascade: 720 → 480 → 360) ─────────────
+  // ── Fetch video details + stream (cascade: 1080 → 720 → 480 → 360) ─────────────
   useEffect(() => {
     let cancelled = false;
+    const watchStartMs = Date.now();
     (async () => {
       if (!video) setLoading(true);
       try {
@@ -547,14 +553,14 @@ export default function VideoDetails() {
         }
       } catch {}
       // Try qualities in descending order for best available stream
-      const qualityOrder: VideoFormat[] = ['video_720', 'video_480', 'video_360'];
+      const qualityOrder: VideoFormat[] = ['video_1080', 'video_720', 'video_480', 'video_360'];
       for (const fmt of qualityOrder) {
         try {
           const url = await contentProvider.resolveStream(id, fmt);
           if (!cancelled && url) {
             setStream(url);
             setActiveQuality(fmt);
-            break; // got a stream, stop trying lower qualities
+            break;
           }
         } catch {}
       }
@@ -564,7 +570,30 @@ export default function VideoDetails() {
         if (!cancelled) setRelatedVideos(related.slice(0, 10));
       } catch {}
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+      // Record watch event for personalization
+      const v = currentVideoRef.current;
+      if (v) {
+        const watchedMs = Math.min(positionRef.current, Date.now() - watchStartMs);
+        const topics = inferTopicsFromVideo(v.title, v.channel, v.category);
+        personalization.recordWatchEvent({
+          videoId:    v.id,
+          title:      v.title,
+          channelId:  v.channelId ?? v.channel,
+          channel:    v.channel,
+          category:   v.category,
+          topics,
+          watchedMs,
+          durationMs: positionRef.current > 0 ? durationMs : 0,
+          completed:  durationMs > 0 && positionRef.current >= durationMs * 0.92,
+          liked:      false,
+          saved:      savedRef.current,
+          shared:     sharedRef.current,
+          at:         Date.now(),
+        }).catch(() => {});
+      }
+    };
   }, [id]);
 
 
@@ -868,12 +897,19 @@ export default function VideoDetails() {
             <Action
               icon={saved ? 'bookmark' : 'bookmark-border'}
               label={saved ? 'Saved' : 'Save'}
-              onPress={async () => setSaved(await library.toggleSaved(video))}
+              onPress={async () => {
+                const nextSaved = await library.toggleSaved(video);
+                setSaved(nextSaved);
+                savedRef.current = nextSaved;
+              }}
             />
             <Action
               icon="share"
               label="Share"
-              onPress={() => Share.share({ message: `${video.title}\n${video.sourceUrl ?? ''}` })}
+              onPress={() => {
+                sharedRef.current = true;
+                Share.share({ message: `${video.title}\n${video.sourceUrl ?? ''}` });
+              }}
             />
             <Action icon="hd" label="Quality" onPress={() => setQualityOpen(true)} />
           </View>
