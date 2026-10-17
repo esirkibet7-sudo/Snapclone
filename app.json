@@ -6,6 +6,14 @@
     "orientation": "portrait",
     "scheme": "kenyatube",
     "userInterfaceStyle": "automatic",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/cbda9fa8-91ac-4edc-aaea-dfc72148cee9",
+      "enabled": true,
+      "fallbackToCacheTimeout": 0
+    },
     "icon": "./assets/icon.png",
     "ios": {
       "infoPlist": {
@@ -38,7 +46,8 @@
           "androidAppId": "ca-app-pub-3940256099942544~3347511713"
         }
       ],
-      "./plugins/withNativeMedia"
+      "./plugins/withNativeMedia",
+      "expo-updates"
     ],
     "assetBundlePatterns": [
       "assets/**/*"
