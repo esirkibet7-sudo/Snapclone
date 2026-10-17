@@ -17,8 +17,8 @@ export const updateService = {
     if (__DEV__ || !Updates.isEnabled) {
       if (manual) {
         Alert.alert(
-          'EAS Updates',
-          'OTA updates are enabled for release builds (APK/AAB). You are currently running in development mode.'
+          'App Updates',
+          'Automatic updates are active in installed app builds. You are currently running in development mode.'
         );
       }
       return false;
