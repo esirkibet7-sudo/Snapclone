@@ -16,10 +16,7 @@ export const updateService = {
   async checkAndApplyUpdate(manual = false): Promise<boolean> {
     if (__DEV__ || !Updates.isEnabled) {
       if (manual) {
-        Alert.alert(
-          'App Updates',
-          'Automatic updates are active in installed app builds. You are currently running in development mode.'
-        );
+        Alert.alert('Up to Date', 'You are running the latest version of KenyaTube.');
       }
       return false;
     }
