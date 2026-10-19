@@ -1,7 +1,7 @@
 # ==============================================================================
 # Kenyatube Backend - Render Dockerfile
 # ==============================================================================
-FROM node:20-bookworm-slim
+FROM node:22-bookworm-slim
 
 # Install system dependencies: Python 3, pip, ffmpeg, and curl
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN ln -sf /usr/bin/python3 /usr/bin/python
 
 # Install yt-dlp for media extraction
-RUN pip3 install --no-cache-dir --break-system-packages yt-dlp
+RUN pip3 install --no-cache-dir --break-system-packages "yt-dlp[default]" bgutil-ytdlp-pot-provider
 
 # Set working directory
 WORKDIR /app

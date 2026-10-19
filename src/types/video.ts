@@ -7,6 +7,7 @@ export type VideoFormatOption = {
   label: string;
   size?: string;
   kind: 'video' | 'audio';
+  playable?: boolean;
 };
 
 export type Video = {

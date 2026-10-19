@@ -11,6 +11,8 @@ app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
+const YOUTUBE_POT_PROVIDER_URL = process.env.YOUTUBE_POT_PROVIDER_URL || '';
+let youtubePotProviderUnavailable = false;
 
 // Resolve FFMPEG path across Linux (Render/Docker) and Windows
 let ffmpegStaticPath = null;
@@ -72,6 +74,24 @@ function formatViews(views) {
   return String(n);
 }
 
+function youtubeExtractorOptions(url, client = YOUTUBE_POT_PROVIDER_URL && !youtubePotProviderUnavailable ? 'mweb' : undefined) {
+  if (!/youtube\.com|youtu\.be/i.test(url)) return [];
+  // EJS handles current player challenges. mweb is paired with the optional
+  // bgutil provider because YouTube may otherwise expose only a 360p stream.
+  const options = ['--js-runtimes', 'node', '--remote-components', 'ejs:github'];
+  if (client) options.push('--extractor-args', `youtube:player_client=${client}`);
+  if (YOUTUBE_POT_PROVIDER_URL && client !== false && !youtubePotProviderUnavailable) {
+    options.push('--extractor-args', `youtubepot-bgutilhttp:base_url=${YOUTUBE_POT_PROVIDER_URL}`);
+  }
+  return options;
+}
+
+function maxCombinedVideoHeight(data) {
+  return Math.max(0, ...(data.formats || [])
+    .filter(format => format.vcodec && format.vcodec !== 'none' && format.acodec && format.acodec !== 'none' && format.url)
+    .map(format => Number(format.height) || 0));
+}
+
 // Map yt-search video to frontend Video format
 function mapYtsVideo(v, category = 'video') {
   return {
@@ -103,32 +123,50 @@ function getLiveVideoDetails(videoIdOrUrl) {
       return resolve(cached.data);
     }
 
-    const args = [
-      '-m',
-      'yt_dlp',
-      '-J',
-      '--no-playlist',
-      '--no-warnings',
-      '--extractor-args',
-      'youtube:player_client=android,web',
-      '--ffmpeg-location',
-      FFMPEG_PATH,
-      url,
-    ];
-
-    runPython(args, { maxBuffer: 10 * 1024 * 1024 }, (err, stdout, stderr) => {
+    const isYoutube = /youtube\.com|youtu\.be/i.test(url);
+    const extract = (client, onResult, timeout = 45000) => {
+      const args = [
+        // Keep warnings on stderr so missing/failed PO tokens can be detected.
+        '-m', 'yt_dlp', '-J', '--no-playlist',
+        ...youtubeExtractorOptions(url, client), '--ffmpeg-location', FFMPEG_PATH, url,
+      ];
+      runPython(args, { maxBuffer: 10 * 1024 * 1024, timeout }, (err, stdout, stderr) => {
+        if (err) return onResult(err, null, stderr);
+        try { onResult(null, JSON.parse(stdout), stderr); }
+        catch (parseErr) { onResult(parseErr, null, stderr); }
+      });
+    };
+    const finish = data => {
+      infoCache.set(cacheKey, { timestamp: Date.now(), data });
+      resolve(data);
+    };
+    const extractDefault = priorError => extract(false, (err, data, stderr) => {
       if (err) {
-        console.error('yt-dlp error:', stderr || err.message);
-        return reject(new Error(stderr || err.message));
+        const failure = stderr || err.message || priorError;
+        console.error('yt-dlp error:', failure);
+        return reject(new Error(failure));
       }
-      try {
-        const data = JSON.parse(stdout);
-        infoCache.set(cacheKey, { timestamp: Date.now(), data });
-        resolve(data);
-      } catch (parseErr) {
-        reject(parseErr);
-      }
+      finish(data);
     });
+
+    // With a configured token provider, request mweb formats first. Without
+    // one, use visionos as the best-effort anonymous client. If it fails or
+    // returns only 360p, retain yt-dlp's default behavior.
+    if (!isYoutube) return extractDefault();
+    const useTokenProvider = Boolean(YOUTUBE_POT_PROVIDER_URL && !youtubePotProviderUnavailable);
+    const preferredClient = useTokenProvider ? 'mweb' : 'visionos';
+    extract(preferredClient, (err, data, stderr) => {
+      const providerFailed = useTokenProvider && (Boolean(err) || /(?:error fetching po token|po token.*not provided|read timed out|provider.*timed out)/i.test(stderr || ''));
+      if (providerFailed) {
+        youtubePotProviderUnavailable = true;
+        console.warn(`[formats] PO-token provider failed for ${url}; using the playable default-client fallback`);
+      }
+      // Expo AV receives one URL, so only accept a higher-quality extraction
+      // when it includes a combined stream the app can play without muxing.
+      if (!err && !providerFailed && maxCombinedVideoHeight(data) > 360) return finish(data);
+      console.warn(`[formats] ${preferredClient} client did not expose >360p for ${url}; retrying default client${stderr ? `: ${stderr.trim().slice(-500)}` : ''}`);
+      extractDefault(err ? (stderr || err.message) : null);
+    }, useTokenProvider ? 25000 : 45000);
   });
 }
 
@@ -178,6 +216,7 @@ function extractAvailableFormats(rawInfo, baseUrl) {
         size: sizeMb,
         kind: 'video',
         isDirect,
+        playable: isDirect,
         directUrl: isDirect ? match.url : undefined,
       });
     }
@@ -391,6 +430,13 @@ function findCombinedFormat(formats, targetHeight) {
   return null;
 }
 
+function findBestVideoHeight(formats, targetHeight) {
+  const match = (formats || [])
+    .filter(f => f.vcodec && f.vcodec !== 'none' && Number(f.height) > 0 && Number(f.height) <= targetHeight)
+    .sort((a, b) => Number(b.height) - Number(a.height) || Number(b.tbr || b.vbr || 0) - Number(a.tbr || a.vbr || 0))[0];
+  return match ? Number(match.height) : null;
+}
+
 // 4. Video Details & Format Resolution (/v2/video and /api/video)
 app.get(['/v2/video', '/api/video'], async (req, res) => {
   const id = req.query.id || req.query.videoId || req.query.url;
@@ -403,7 +449,9 @@ app.get(['/v2/video', '/api/video'], async (req, res) => {
   try {
     const raw = await getLiveVideoDetails(id);
     const baseUrl = `${req.protocol}://${req.get('host')}`;
+    const sourceId = raw.webpage_url || (String(id).startsWith('http') ? id : raw.id);
     const formats = extractAvailableFormats(raw, baseUrl);
+    console.log(`[formats] ${raw.id}: ${formats.filter(item => item.kind === 'video').map(item => item.label).join(', ') || 'no video formats found'}`);
 
     // If a specific stream/format was requested
     if (requestedFormat) {
@@ -425,10 +473,17 @@ app.get(['/v2/video', '/api/video'], async (req, res) => {
             formats,
           });
         }
+        // Playback must not point Expo AV at a file that has to be fully
+        // downloaded and muxed first. Downloads can use the mux endpoint below.
+        if (req.query.purpose === 'playback') {
+          return res.status(422).json({ error: 'No directly playable stream is available at this quality' });
+        }
         // No combined format found — fall back to server-muxed stream
-        streamUrl = `${baseUrl}/api/download?id=${encodeURIComponent(raw.id)}&format=${encodeURIComponent(requestedFormat)}`;
+        streamUrl = `${baseUrl}/api/download?id=${encodeURIComponent(sourceId)}&format=${encodeURIComponent(requestedFormat)}`;
+        const resolvedHeight = findBestVideoHeight(raw.formats || [], targetHeight);
+        return res.json({ id: raw.id, title: raw.title, streamUrl, directUrl: null, resolvedHeight, formats });
       } else {
-        streamUrl = `${baseUrl}/api/download?id=${encodeURIComponent(raw.id)}&format=${encodeURIComponent(requestedFormat)}`;
+        streamUrl = `${baseUrl}/api/download?id=${encodeURIComponent(sourceId)}&format=${encodeURIComponent(requestedFormat)}`;
       }
 
       return res.json({
@@ -498,11 +553,13 @@ app.get(['/api/download', '/v2/video/stream'], async (req, res) => {
       ? [
           '-m', 'yt_dlp', '-f', 'bestaudio', '--extract-audio', '--audio-format', 'mp3',
           '--audio-quality', format === 'audio_320' ? '320K' : format === 'audio_192' ? '192K' : '128K',
+          ...youtubeExtractorOptions(videoUrl),
           '--ffmpeg-location', FFMPEG_PATH, '-o', outputPath, videoUrl,
         ]
       : [
           '-m', 'yt_dlp',
           '-f', `bestvideo[height<=${targetHeight}][ext=mp4]+bestaudio[ext=m4a]/bestvideo[height<=${targetHeight}]+bestaudio/best[height<=${targetHeight}]/best`,
+          ...youtubeExtractorOptions(videoUrl),
           '--merge-output-format', 'mp4', '--ffmpeg-location', FFMPEG_PATH,
           '-o', outputPath, videoUrl,
         ];

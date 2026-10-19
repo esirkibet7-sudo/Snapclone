@@ -41,6 +41,7 @@ export interface ContentProvider {
   search(query: string, filter?: SearchFilter): Promise<Video[]>;
   getDetails(id: string): Promise<Video | null>;
   resolveStream(id: string, format: VideoFormat): Promise<string | null>;
+  resolveStreamWithQuality(id: string, format: VideoFormat, purpose?: 'playback' | 'download'): Promise<{ url: string; resolvedFormat: VideoFormat } | null>;
   resolveUrl(url: string): Promise<ProviderLinkResult>;
   home(tab?: SearchFilter): Promise<Video[]>;
   homePaged(tab?: SearchFilter, page?: number): Promise<Video[]>;
@@ -131,18 +132,31 @@ export class SnapTubeProvider implements ContentProvider {
   }
 
   async resolveStream(id: string, format: VideoFormat): Promise<string | null> {
+    return (await this.resolveStreamWithQuality(id, format))?.url ?? null;
+  }
+
+  async resolveStreamWithQuality(id: string, format: VideoFormat, purpose: 'playback' | 'download' = 'download'): Promise<{ url: string; resolvedFormat: VideoFormat } | null> {
     try {
-      const raw = await this.request(API_BASE, routes.video, { id, videoId: id, format, quality: format, type: format.startsWith('audio_') ? 'audio' : 'video' });
+      const raw = await this.request(API_BASE, routes.video, { id, videoId: id, format, quality: format, type: format.startsWith('audio_') ? 'audio' : 'video', purpose });
       if (raw && typeof raw === 'object') {
-        if (raw.streamUrl) return raw.streamUrl;
-        if (raw.directUrl) return raw.directUrl;
+        const url = raw.streamUrl || raw.directUrl;
+        if (url) {
+          const height = Number(raw.resolvedHeight);
+          const resolvedFormat = Number.isFinite(height) && height > 0 && format.startsWith('video_')
+            ? `video_${height}` as VideoFormat
+            : format;
+          return { url, resolvedFormat };
+        }
       }
       const direct = findMediaUrl(raw);
-      if (direct) return direct;
+      if (direct) return { url: direct, resolvedFormat: format };
     } catch {}
 
+    // Playback must not fall back to a long-running download/mux request.
+    if (purpose === 'playback') return null;
+
     // Direct download/stream endpoint on backend
-    return `${API_BASE}/api/download?id=${encodeURIComponent(id)}&format=${encodeURIComponent(format)}`;
+    return { url: `${API_BASE}/api/download?id=${encodeURIComponent(id)}&format=${encodeURIComponent(format)}`, resolvedFormat: format };
   }
 
   async resolveUrl(url: string): Promise<ProviderLinkResult> {

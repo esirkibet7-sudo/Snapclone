@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   Animated,
   BackHandler,
   GestureResponderEvent,
@@ -56,6 +57,21 @@ const DOWNLOAD_FORMATS: VideoFormatOption[] = [
   { id: 'audio_192',  label: 'MP3 192 kbps', size: 'Audio',    kind: 'audio' },
   { id: 'audio_320',  label: 'MP3 320 kbps', size: 'Audio',    kind: 'audio' },
 ];
+
+type QualityAttempt = {
+  choices: VideoFormat[];
+  index: number;
+  token: number;
+  previousStream: string | null;
+  previousQuality: VideoFormat;
+  busy: boolean;
+};
+
+function qualityFallbacks(format: VideoFormat): VideoFormat[] {
+  const requestedIndex = VIDEO_QUALITIES.findIndex(item => item.id === format);
+  const start = requestedIndex < 0 ? VIDEO_QUALITIES.length - 1 : requestedIndex;
+  return VIDEO_QUALITIES.slice(0, start + 1).reverse().map(item => item.id);
+}
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function fmtTime(ms: number) {
@@ -422,6 +438,8 @@ export default function VideoDetails() {
   const [saved, setSaved]                 = useState(false);
   const [activeQuality, setActiveQuality] = useState<VideoFormat>('video_720');
   const [qualityLoading, setQualityLoading] = useState(false);
+  const qualityAttemptRef = useRef<QualityAttempt | null>(null);
+  const qualityTokenRef = useRef(0);
   const [isFullscreen, setIsFullscreen]   = useState(false);
   const [resizeMode, setResizeMode]       = useState<ResizeMode>(ResizeMode.CONTAIN);
 
@@ -436,6 +454,39 @@ export default function VideoDetails() {
   const sharedRef                        = useRef(false);
   const currentVideoRef                  = useRef(video);
   useEffect(() => { currentVideoRef.current = video; }, [video]);
+
+  const attemptQualityAt = useCallback(async (attempt: QualityAttempt, startIndex: number) => {
+    if (attempt.busy || attempt.token !== qualityTokenRef.current) return;
+    attempt.busy = true;
+    setQualityLoading(true);
+    for (let index = startIndex; index < attempt.choices.length; index++) {
+      try {
+        const resolved = await contentProvider.resolveStreamWithQuality(id, attempt.choices[index], 'playback');
+        if (attempt.token !== qualityTokenRef.current) return;
+        if (!resolved?.url) continue;
+        const actualIndex = attempt.choices.indexOf(resolved.resolvedFormat);
+        attempt.index = actualIndex >= index ? actualIndex : index;
+        attempt.busy = false;
+        qualityAttemptRef.current = attempt;
+        setActiveQuality(resolved.resolvedFormat);
+        setStream(resolved.url);
+        return;
+      } catch {}
+    }
+
+    if (attempt.token !== qualityTokenRef.current) return;
+    attempt.busy = false;
+    qualityAttemptRef.current = null;
+    setQualityLoading(false);
+    if (attempt.previousStream) {
+      setStream(attempt.previousStream);
+      setActiveQuality(attempt.previousQuality);
+      Alert.alert('Quality unavailable', 'That stream could not be played. The previous quality has been restored.');
+    } else {
+      setStream(null);
+      Alert.alert('Playback unavailable', 'This video could not start at the available qualities. Please try again later.');
+    }
+  }, [id]);
 
   // ── Controls visibility ───────────────────────────────────────────────────
   const [controlsVisible, setControlsVisible] = useState(false);
@@ -537,6 +588,7 @@ export default function VideoDetails() {
     let cancelled = false;
     const watchStartMs = Date.now();
     (async () => {
+      let playbackResolved = false;
       if (!video) setLoading(true);
       try {
         const v = await contentProvider.getDetails(id);
@@ -556,15 +608,32 @@ export default function VideoDetails() {
       const qualityOrder: VideoFormat[] = ['video_1080', 'video_720', 'video_480', 'video_360'];
       for (const fmt of qualityOrder) {
         try {
-          const url = await contentProvider.resolveStream(id, fmt);
-          if (!cancelled && url) {
-            setStream(url);
-            setActiveQuality(fmt);
+          const resolved = await contentProvider.resolveStreamWithQuality(id, fmt, 'playback');
+          if (!cancelled && resolved?.url) {
+            playbackResolved = true;
+            const token = ++qualityTokenRef.current;
+            const choices = qualityFallbacks(fmt);
+            const resolvedIndex = choices.indexOf(resolved.resolvedFormat);
+            qualityAttemptRef.current = {
+              choices,
+              index: resolvedIndex >= 0 ? resolvedIndex : 0,
+              token,
+              previousStream: null,
+              previousQuality: 'video_720',
+              busy: false,
+            };
+            setStream(resolved.url);
+            setActiveQuality(resolved.resolvedFormat);
             break;
           }
         } catch {}
       }
-      if (!cancelled) setLoading(false);
+      if (!cancelled) {
+        setLoading(false);
+        if (!playbackResolved) {
+          Alert.alert('Playback unavailable', 'The backend could not provide a playable stream for this video. Try again after the backend is reachable.');
+        }
+      }
       try {
         const related = await contentProvider.similar(id);
         if (!cancelled) setRelatedVideos(related.slice(0, 10));
@@ -663,26 +732,36 @@ export default function VideoDetails() {
   const switchQuality = async (fmt: VideoFormat) => {
     setQualityOpen(false);
     if (fmt === activeQuality) return;
-    const savedPos = positionRef.current;
-    setQualityLoading(true);
-    try {
-      const url = await contentProvider.resolveStream(id, fmt);
-      if (url) {
-        setStream(url);
-        setActiveQuality(fmt);
-        positionRef.current = savedPos; // restored in onLoad
-      }
-    } catch {}
-    setQualityLoading(false);
+    const attempt: QualityAttempt = {
+      choices: qualityFallbacks(fmt),
+      index: 0,
+      token: ++qualityTokenRef.current,
+      previousStream: stream,
+      previousQuality: activeQuality,
+      busy: false,
+    };
+    qualityAttemptRef.current = attempt;
+    void attemptQualityAt(attempt, 0);
   };
 
   const onVideoLoad = useCallback(async () => {
+    setQualityLoading(false);
     if (positionRef.current > 0 && videoRef.current) {
       try {
         await videoRef.current.setStatusAsync({ positionMillis: positionRef.current, shouldPlay: true });
       } catch {}
     }
   }, []);
+
+  const onVideoError = useCallback(() => {
+    const attempt = qualityAttemptRef.current;
+    if (attempt) {
+      void attemptQualityAt(attempt, attempt.index + 1);
+      return;
+    }
+    setStream(null);
+    Alert.alert('Playback error', 'This video stream could not be played.');
+  }, [attemptQualityAt]);
 
   // ── Play/Pause toggle ─────────────────────────────────────────────────────
   const togglePlayPause = useCallback(async () => {
@@ -755,7 +834,7 @@ export default function VideoDetails() {
   };
 
   const availableVideoQualities = video?.formats && video.formats.length > 0
-    ? VIDEO_QUALITIES.filter(q => video.formats!.some(f => f.id === q.id))
+    ? VIDEO_QUALITIES.filter(q => video.formats!.some(f => f.id === q.id && f.playable !== false))
     : VIDEO_QUALITIES;
 
   const availableDownloadFormats = video?.formats && video.formats.length > 0
@@ -806,6 +885,7 @@ export default function VideoDetails() {
             shouldPlay
             onPlaybackStatusUpdate={onPlaybackStatusUpdate}
             onLoad={onVideoLoad}
+            onError={onVideoError}
           />
         ) : !qualityLoading ? (
           <Image
