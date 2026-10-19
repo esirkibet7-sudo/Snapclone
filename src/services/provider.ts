@@ -1,14 +1,15 @@
 import { Video, VideoFormat, SearchFilter, ProviderLinkResult, VideoCategory } from '../types/video';
+import { personalization, KENYA_INTERESTS } from './personalization';
 
 /**
  * Provider integration reconstructed from the supplied SnapTube APK.
  * The APK exposes the production service families below. We intentionally
  * do not copy authentication material, device identifiers, or private keys.
  */
-const DEFAULT_LOCAL = 'http://192.168.1.156:5000';
+const DEFAULT_API = 'http://192.168.1.156:5000';
 const ENV_BASE = process.env.EXPO_PUBLIC_SNAPTUBE_API_BASE;
-const API_BASE = (ENV_BASE && !ENV_BASE.includes('thejeu.com') ? ENV_BASE : DEFAULT_LOCAL).replace(/\/$/, '');
-const SIMPLE_API = (process.env.EXPO_PUBLIC_SNAPTUBE_SIMPLE_API_BASE || DEFAULT_LOCAL).replace(/\/$/, '');
+const API_BASE = (ENV_BASE || DEFAULT_API).replace(/\/$/, '');
+const SIMPLE_API = (process.env.EXPO_PUBLIC_SNAPTUBE_SIMPLE_API_BASE || DEFAULT_API).replace(/\/$/, '');
 
 const routes = {
   search: '/v2/video/search',
@@ -42,10 +43,12 @@ export interface ContentProvider {
   resolveStream(id: string, format: VideoFormat): Promise<string | null>;
   resolveUrl(url: string): Promise<ProviderLinkResult>;
   home(tab?: SearchFilter): Promise<Video[]>;
+  homePaged(tab?: SearchFilter, page?: number): Promise<Video[]>;
   similar(id: string): Promise<Video[]>;
 }
 
 export class SnapTubeProvider implements ContentProvider {
+  private feedSeeds: Partial<Record<SearchFilter, number>> = {};
   private async request(base: string, path: string, params: Record<string, string | number | undefined> = {}) {
     const query = new URLSearchParams();
     Object.entries(params).forEach(([k, v]) => { if (v !== undefined && v !== '') query.set(k, String(v)); });
@@ -82,16 +85,40 @@ export class SnapTubeProvider implements ContentProvider {
   }
 
   async homePaged(tab: SearchFilter = 'all', page: number = 1): Promise<Video[]> {
+    const year = new Date().getFullYear();
+    const scores = await personalization.getEffectiveScores();
+    const interests = Object.entries(scores as Record<string, number>)
+      .filter(([, score]) => score >= 0.35)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 6)
+      .map(([id]) => KENYA_INTERESTS.find(x => x.id === id)?.label.toLowerCase());
+    const focused = interests.filter(Boolean);
     const pageKeywords: Record<string, string[]> = {
-      all: ['trending popular', 'viral videos 2025', 'top videos this week', 'most watched', 'hot right now'],
-      music: ['top music hits 2025', 'new music videos', 'popular songs now', 'music charts', 'hot new songs'],
-      shorts: ['trending shorts', 'viral short clips', 'funny shorts', 'best short videos', 'new shorts today'],
-      live: ['live stream now', 'live events today', 'live gaming', 'live news', 'live concerts'],
+      all: [
+        ...focused.map(topic => `${topic} Kenya`),
+        `trending Kenya ${year}`, `viral videos Africa ${year}`, `popular videos this week`,
+        `new creators Kenya ${year}`, `most watched videos today`,
+      ],
+      music: [
+        ...focused.filter(topic => /music|gospel|dance/.test(topic!)).map(topic => `${topic} music Kenya`),
+        `new Kenyan music ${year}`, `gengetone and afrobeats ${year}`, `Kenyan gospel songs ${year}`,
+        `East African music videos ${year}`, `viral African songs ${year}`, `new music videos this week`,
+      ],
+      shorts: [
+        ...focused.map(topic => `${topic} shorts`),
+        'Kenyan comedy shorts', 'football skills shorts', 'African dance shorts', 'funny animal shorts',
+        'quick cooking shorts', 'viral technology shorts', 'popular YouTube shorts today',
+        'African creators short videos', 'new comedy clips shorts',
+      ],
+      live: ['live Kenya now', 'Kenya live news', 'African live music', 'live football today', 'live events today'],
     };
-    const keywords = pageKeywords[tab] ?? pageKeywords['all'];
-    const keyword = keywords[(page - 1) % keywords.length];
+    const keywords = [...new Set(pageKeywords[tab] ?? pageKeywords.all)];
+    if (page === 1 || this.feedSeeds[tab] === undefined) {
+      this.feedSeeds[tab] = Math.floor(Math.random() * keywords.length);
+    }
+    const keyword = keywords[(this.feedSeeds[tab]! + page - 1) % keywords.length];
     const route = '/list/youtube/home';
-    const raw = await this.request(API_BASE, route, { page, tab: tab === 'all' ? undefined : tab, q: keyword }).catch(() => null);
+    const raw = await this.request(API_BASE, route, { page, tab: tab === 'all' ? undefined : tab, q: keyword, refresh: Date.now() }).catch(() => null);
     const videos = normalizeVideos(raw ?? {}).filter(v => tab === 'all' || v.category === tab);
     return videos;
   }
@@ -120,10 +147,22 @@ export class SnapTubeProvider implements ContentProvider {
 
   async resolveUrl(url: string): Promise<ProviderLinkResult> {
     try {
+      const raw = await this.request(API_BASE, '/api/resolve', { url });
+      if (raw?.provider === 'spotify') {
+        const video = normalizeVideo(raw.video);
+        return { kind: 'audio', provider: 'Spotify', downloadable: false, title: video?.title ?? raw.title, video: video ?? undefined };
+      }
+      const video = normalizeVideo(raw?.video) ?? normalizeVideos(raw)[0];
+      if (video) return { kind: 'video', provider: raw?.provider, downloadable: raw?.downloadable !== false, title: video.title, video };
+    } catch {}
+    try {
       const raw = await this.request(API_BASE, routes.video, { url });
       const video = normalizeVideos(raw)[0];
-      if (video) return { kind: video.category === 'music' ? 'audio' : 'video', title: video.title, video };
+      if (video) return { kind: video.category === 'music' ? 'audio' : 'video', provider: 'Media extractor', downloadable: true, title: video.title, video };
     } catch {}
+    if (/spotify\.com|spotify\.link/i.test(url)) {
+      return { kind: 'audio', provider: 'Spotify', downloadable: false, title: 'Spotify link' };
+    }
     return { kind: 'unknown', title: url };
   }
 

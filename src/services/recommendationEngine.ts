@@ -188,13 +188,23 @@ export class RecommendationEngine {
       creatorCounts[channelId] = creatorCount + 1;
     }
 
-    // Sort descending
+    // Prefer unseen items when the provider returned enough fresh choices.
+    // If the pool is small, keep familiar items as a fallback rather than
+    // leaving the feed empty.
     results.sort((a, b) => b._score - a._score);
+    const unseen = results.filter(video => !profile.seenVideoIds.includes(video.id));
+    const ranked = unseen.length >= Math.min(8, candidates.length)
+      ? unseen
+      : results.sort((a, b) => {
+          const aSeen = profile.seenVideoIds.includes(a.id) ? 1 : 0;
+          const bSeen = profile.seenVideoIds.includes(b.id) ? 1 : 0;
+          return aSeen - bSeen || b._score - a._score;
+        });
 
     // Mark shown in session
-    for (const v of results) this._sessionShown.add(v.id);
+    for (const v of ranked) this._sessionShown.add(v.id);
 
-    return results;
+    return ranked;
   }
 
   /** Build "For You" keywords for the provider based on user interests */

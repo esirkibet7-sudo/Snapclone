@@ -1,18 +1,18 @@
 {
   "expo": {
     "name": "KenyaTube",
-    "slug": "kenyatube",
+    "slug": "snaptube-clone",
     "version": "0.1.0",
     "orientation": "portrait",
     "scheme": "kenyatube",
     "userInterfaceStyle": "automatic",
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
     "updates": {
       "url": "https://u.expo.dev/cbda9fa8-91ac-4edc-aaea-dfc72148cee9",
       "enabled": true,
       "fallbackToCacheTimeout": 0
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
     },
     "icon": "./assets/icon.png",
     "ios": {

@@ -17,6 +17,10 @@ function withNativeMedia(config){
   config=withAndroidManifest(config,c=>{
     const app=c.modResults.manifest.application?.[0];
     if(!app)return c;
+    // The app connects to the developer's laptop backend over the local LAN
+    // using HTTP. Android 9+ blocks cleartext traffic unless this is enabled.
+    app.$=app.$||{};
+    app.$['android:usesCleartextTraffic']='true';
     app.service=app.service||[];
     const add=(name,type,action)=>{
       if(!app.service.some(x=>x.$?.['android:name']===name)){

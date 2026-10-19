@@ -45,6 +45,7 @@ export default function LinkImport() {
   const [resolved, setResolved] = useState<Video | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [downloading, setDownloading] = useState<VideoFormat | null>(null);
+  const [metadataOnly, setMetadataOnly] = useState(false);
 
   // Auto-resolve if a URL was passed via clipboard
   useEffect(() => {
@@ -57,8 +58,10 @@ export default function LinkImport() {
     if (!url.trim()) return;
     setBusy(true);
     setResolved(null);
+    setMetadataOnly(false);
     try {
       const result = await contentProvider.resolveUrl(url.trim());
+      setMetadataOnly(result.downloadable === false);
       if (result.video) {
         setResolved(result.video);
         setSheetOpen(true);
@@ -100,7 +103,8 @@ export default function LinkImport() {
     if (!resolved) return;
     setDownloading(opt.id);
     try {
-      const streamUrl = await contentProvider.resolveStream(resolved.id, opt.id);
+      const sourceId = resolved.sourceUrl || resolved.id;
+      const streamUrl = await contentProvider.resolveStream(sourceId, opt.id);
       const suffix = opt.kind === 'audio' ? `${opt.label}` : `${opt.label}`;
       await downloadManager.enqueue({
         id: `${resolved.id}-${opt.id}-${Date.now()}`,
@@ -108,7 +112,7 @@ export default function LinkImport() {
         url: streamUrl ?? undefined,
         type: opt.kind,
         format: opt.id,
-        videoId: resolved.id,
+        videoId: sourceId,
       });
       setSheetOpen(false);
       router.push('/downloads');
@@ -205,6 +209,12 @@ export default function LinkImport() {
           )}
 
           <ScrollView showsVerticalScrollIndicator={false}>
+            {metadataOnly ? (
+              <View style={styles.sectionHeader}>
+                <MaterialIcons name="info-outline" size={18} color="#E53935" />
+                <Text style={[styles.sectionTitle, { flex: 1 }]}>Spotify provides track details here. Audio downloading is unavailable for this link.</Text>
+              </View>
+            ) : <>
             {/* MP4 section */}
             <View style={styles.sectionHeader}>
               <MaterialIcons name="video-file" size={18} color="#E53935" />
@@ -270,6 +280,7 @@ export default function LinkImport() {
                 <Text style={styles.watchBtnText}>Watch / Stream</Text>
               </Pressable>
             )}
+            </>}
           </ScrollView>
         </View>
       </Modal>

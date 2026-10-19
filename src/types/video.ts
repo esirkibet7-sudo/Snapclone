@@ -29,4 +29,6 @@ export type ProviderLinkResult = {
   kind: 'video' | 'audio' | 'playlist' | 'profile' | 'unknown';
   title?: string;
   video?: Video;
+  provider?: string;
+  downloadable?: boolean;
 };

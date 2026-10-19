@@ -46,6 +46,7 @@ export default function Home() {
   const [page, setPage]         = useState(1);
   const [hasMore, setHasMore]   = useState(true);
   const [niVideo, setNiVideo]   = useState<Video | null>(null);
+  const loadRequestId = useRef(0);
   const swipeX  = useRef(new Animated.Value(0)).current;
   const tabAnim = useRef(new Animated.Value(3)).current;
   const tab = TABS[tabIndex];
@@ -56,34 +57,40 @@ export default function Home() {
   const changeTab = useCallback((index: number) => { setTabIndex(index); animateTab(index); }, []);
 
   const load = useCallback(async (pg = 1, replace = true) => {
+    const requestId = ++loadRequestId.current;
     if (pg === 1) { if (replace) setLoading(true); else setRefreshing(true); }
     else setLoadingMore(true);
     try {
+      if (pg === 1) recommendationEngine.clearSession();
       let list: Video[] = [];
       if (tab.value === 'all') {
         try {
-          const raw = typeof (contentProvider as any).homePaged === 'function'
-            ? await (contentProvider as any).homePaged('all', pg)
-            : await contentProvider.home('all');
+          const raw = await contentProvider.homePaged('all', pg);
           const candidates: Video[] = Array.isArray(raw) ? raw : [];
-          if (pg === 1) recommendationEngine.clearSession();
           list = await recommendationEngine.rankVideos(candidates);
           if (list.length === 0) list = candidates;
         } catch {
           list = await contentProvider.home('all').catch(() => []);
         }
       } else {
-        const data = typeof (contentProvider as any).homePaged === 'function'
-          ? await (contentProvider as any).homePaged(tab.value, pg)
-          : await contentProvider.home(tab.value as any);
-        list = Array.isArray(data) ? data : [];
+        const data = await contentProvider.homePaged(tab.value as 'live' | 'shorts' | 'music', pg);
+        const candidates: Video[] = Array.isArray(data) ? data : [];
+        list = await recommendationEngine.rankVideos(candidates);
+        if (list.length === 0) list = candidates;
       }
+      if (requestId !== loadRequestId.current) return;
       if (pg === 1) setVideos(list);
       else setVideos(prev => { const ids = new Set(prev.map(v => v.id)); return [...prev, ...list.filter(v => !ids.has(v.id))]; });
       setHasMore(list.length >= 8);
       setPage(pg);
-    } catch { if (pg === 1) setVideos([]); }
-    finally { setLoading(false); setRefreshing(false); setLoadingMore(false); }
+    } catch { if (requestId === loadRequestId.current && pg === 1) setVideos([]); }
+    finally {
+      if (requestId === loadRequestId.current) {
+        setLoading(false);
+        setRefreshing(false);
+        setLoadingMore(false);
+      }
+    }
   }, [tab.value]);
 
   useEffect(() => { setVideos([]); setPage(1); setHasMore(true); load(1, true); }, [tabIndex]);

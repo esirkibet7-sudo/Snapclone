@@ -4,14 +4,18 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import androidx.media3.exoplayer.download.DownloadService
+import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.datasource.cache.CacheDataSource
+import androidx.media3.datasource.cache.NoOpCacheEvictor
+import androidx.media3.datasource.cache.SimpleCache
+import androidx.media3.database.StandaloneDatabaseProvider
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.offline.DownloadManager
 import androidx.media3.exoplayer.offline.DefaultDownloadIndex
 import androidx.media3.exoplayer.offline.DefaultDownloaderFactory
 import androidx.media3.exoplayer.offline.Download
-import androidx.media3.database.StandaloneDatabaseProvider
-import androidx.media3.common.util.UnstableApi
-import androidx.media3.exoplayer.scheduler.Requirements
+import androidx.media3.exoplayer.offline.DownloadService
+import java.io.File
 
 @UnstableApi
 class CloneDownloadService : DownloadService(
@@ -36,12 +40,26 @@ class CloneDownloadService : DownloadService(
     companion object {
         private const val CHANNEL_ID="clone-downloads"
         @Volatile private var instance:DownloadManager?=null
+        @Volatile private var downloadCache:SimpleCache?=null
         fun manager(context:Context):DownloadManager {
             return instance ?: synchronized(this){ instance ?: run {
-                val db=StandaloneDatabaseProvider(context.applicationContext)
+                val appContext=context.applicationContext
+                val db=StandaloneDatabaseProvider(appContext)
                 val index=DefaultDownloadIndex(db)
-                val factory=DefaultDownloaderFactory(com.google.common.util.concurrent.MoreExecutors.directExecutor(),null)
-                DownloadManager(context.applicationContext,index,factory).also{instance=it}
+                val cache=downloadCache ?: SimpleCache(
+                    File(appContext.filesDir,"media-downloads"),
+                    NoOpCacheEvictor(),
+                    db
+                ).also { downloadCache=it }
+                val upstream=DefaultHttpDataSource.Factory()
+                val cacheDataSource=CacheDataSource.Factory()
+                    .setCache(cache)
+                    .setUpstreamDataSourceFactory(upstream)
+                val factory=DefaultDownloaderFactory(
+                    cacheDataSource,
+                    com.google.common.util.concurrent.MoreExecutors.directExecutor()
+                )
+                DownloadManager(appContext,index,factory).also{instance=it}
             }}
         }
     }
